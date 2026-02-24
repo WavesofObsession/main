@@ -317,6 +317,33 @@
         padding-left: 52px; /* room for hamburger */
       }
     }
+	/* ── Images ────────────────────────────────────────────── */
+	.content img {
+ 	 max-width: 100%;
+ 	 height: auto;
+ 	 display: block;
+  	border: 1px solid var(--border);
+  	border-radius: 3px;
+ 	 margin: 24px 0;
+	}
+
+	.content img.small {
+ 	 max-width: 320px;
+	}
+
+	.content img.inline {
+ 	 display: inline;
+ 	 margin: 0 6px;
+ 	 vertical-align: middle;
+	}
+
+	figcaption {
+  	font-family: var(--mono);
+  	font-size: 11px;
+  	color: var(--text-dim);
+  	margin-top: -16px;
+  	margin-bottom: 24px;
+	}
   </style>
 </head>
 <body>
@@ -411,6 +438,8 @@
           related ideas like <a href="philosophy.html" class="wikilink">Philosophy of food</a>.
         </p>
 
+	<img src="images/tree1.jpg" alt="this is a tree">
+
         <h2>Bread</h2>
         <p>
           A paragraph about bread goes here. Notice how the heading style uses the monospace font 
@@ -422,6 +451,8 @@
           <li><a href="#">No-knead overnight loaf</a></li>
           <li><a href="#">Focaccia with rosemary</a></li>
         </ul>
+	
+	<img src="images/tree1.jpg" alt="small tree" class="small">
 
         <hr class="divider">
 
