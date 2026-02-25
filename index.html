@@ -3,24 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Site</title>
+  <title>Recipes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
     /* ── Variables ─────────────────────────────────────────── */
     :root {
-      --bg:        #0d0d0d;
-      --bg-side:   #111111;
-      --bg-hover:  #1a1a1a;
-      --border:    #222222;
-      --text:      #c9c9c9;
-      --text-dim:  #555555;
-      --text-head: #e8e8e8;
-      --accent:    #7aa2f7;
-      --accent2:   #bb9af7;
-      --sidebar-w: 220px;
-      --mono:      'JetBrains Mono', monospace;
-      --serif:     'Lora', Georgia, serif;
+      --bg:         #0d0d0d;
+      --bg-side:    #111111;
+      --bg-hover:   #1a1a1a;
+      --bg-feature: #141414;
+      --border:     #222222;
+      --border-hi:  #333333;
+      --text:       #c9c9c9;
+      --text-dim:   #c4c2c2;
+      --text-head:  #e8e8e8;
+      --accent:     #7aa2f7;
+      --accent2:    #bb9af7;
+      --sidebar-w:  220px;
+      --mono:       'JetBrains Mono', monospace;
+      --serif:      'Lora', Georgia, serif;
     }
 
     /* ── Reset ─────────────────────────────────────────────── */
@@ -35,7 +37,7 @@
       line-height: 1.7;
     }
 
-    /* ── Layout ────────────────────────────────────────────── */
+    /* ── Root layout ───────────────────────────────────────── */
     .layout {
       display: flex;
       height: 100vh;
@@ -52,7 +54,6 @@
       flex-direction: column;
       overflow-y: auto;
       overflow-x: hidden;
-      position: relative;
       z-index: 10;
       transition: transform 0.25s ease;
     }
@@ -78,15 +79,8 @@
       margin-top: 4px;
     }
 
-    /* Nav groups */
-    .nav-group {
-      padding: 16px 0 8px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-group:last-child {
-      border-bottom: none;
-    }
+    .nav-group { border-bottom: 1px solid var(--border); }
+    .nav-group:last-child { border-bottom: none; }
 
     .nav-group-label {
       font-family: var(--mono);
@@ -95,12 +89,39 @@
       color: var(--text-dim);
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      padding: 0 16px 6px;
+      padding: 12px 16px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      transition: color 0.15s;
+    }
+
+    .nav-group-label:hover { color: var(--text); }
+
+    .nav-group-label::after {
+      content: '›';
+      font-size: 14px;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-group.open .nav-group-label::after { transform: rotate(90deg); }
+
+    .nav-links {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.25s ease;
+    }
+
+    .nav-group.open .nav-links {
+      max-height: 500px;
+      padding-bottom: 8px;
     }
 
     .nav-link {
       display: block;
-      padding: 5px 16px;
+      padding: 5px 16px 5px 24px;
       font-family: var(--mono);
       font-size: 12.5px;
       color: var(--text);
@@ -121,7 +142,7 @@
       background: var(--bg-hover);
     }
 
-    /* ── Main area ─────────────────────────────────────────── */
+    /* ── Main column ───────────────────────────────────────── */
     .main {
       flex: 1;
       display: flex;
@@ -129,7 +150,7 @@
       overflow: hidden;
     }
 
-    /* Sub-nav at top of content area */
+    /* ── Subnav ────────────────────────────────────────────── */
     .subnav {
       background: var(--bg-side);
       border-bottom: 1px solid var(--border);
@@ -151,108 +172,173 @@
       margin-right: 8px;
     }
 
-    .subnav-link {
+    .subnav-btn {
       font-family: var(--mono);
       font-size: 11.5px;
       color: var(--text-dim);
-      text-decoration: none;
+      background: none;
+      border: none;
       padding: 4px 10px;
       border-radius: 3px;
+      cursor: pointer;
       transition: background 0.15s, color 0.15s;
     }
 
-    .subnav-link:hover {
-      background: var(--bg-hover);
-      color: var(--accent2);
+    .subnav-btn:hover { background: var(--bg-hover); color: var(--accent2); }
+    .subnav-btn.active { color: var(--accent2); background: var(--bg-hover); }
+
+    /* ── Featured block ────────────────────────────────────── */
+    .featured {
+      background: var(--bg-feature);
+      border-bottom: 1px solid var(--border-hi);
+      padding: 22px 36px 26px;
+      flex-shrink: 0;
     }
 
-    .subnav-link.active {
-      color: var(--accent2);
-      background: var(--bg-hover);
-    }
-
-    /* Content scroll area */
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 40px 48px;
-      max-width: 860px;
-    }
-
-    /* ── Typography ────────────────────────────────────────── */
-    .page-title {
+    .featured-label {
       font-family: var(--mono);
-      font-size: 22px;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .featured-panel { display: none; }
+    .featured-panel.active { display: block; }
+
+    .featured-panel h2 {
+      font-family: var(--mono);
+      font-size: 16px;
       font-weight: 500;
       color: var(--text-head);
-      margin-bottom: 6px;
-      letter-spacing: -0.01em;
+      margin-bottom: 10px;
     }
 
-    .page-meta {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
-      margin-bottom: 32px;
-    }
-
-    .content h2 {
-      font-family: var(--mono);
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin: 36px 0 12px;
-    }
-
-    .content p {
-      margin-bottom: 18px;
+    .featured-panel p {
       color: var(--text);
+      max-width: 680px;
+      margin-bottom: 12px;
+      font-size: 15px;
     }
 
-    .content a {
+    .featured-panel ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+      list-style: none;
+      padding: 0;
+    }
+
+    .featured-panel ul li a {
+      font-family: var(--mono);
+      font-size: 12px;
       color: var(--accent);
       text-decoration: none;
       border-bottom: 1px solid transparent;
       transition: border-color 0.15s;
     }
 
-    .content a:hover {
-      border-bottom-color: var(--accent);
+    .featured-panel ul li a:hover { border-bottom-color: var(--accent); }
+
+    /* ── Section divider ───────────────────────────────────── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 36px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      min-height: 32px;
     }
 
-    .content ul {
-      padding-left: 20px;
-      margin-bottom: 18px;
+    .section-divider span {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      white-space: nowrap;
     }
 
-    .content ul li {
-      margin-bottom: 6px;
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
     }
 
-    /* Wikilink style */
-    a.wikilink {
-      color: var(--accent2);
-      font-style: italic;
+    /* ── Scroll area ───────────────────────────────────────── */
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 36px 36px 60px;
+      max-width: 100%;
     }
 
-    a.wikilink:hover {
-      border-bottom-color: var(--accent2);
+    .scroll-area section { margin-bottom: 48px; }
+
+    .scroll-area h2 {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
     }
 
-    hr.divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 32px 0;
+    .scroll-area p { margin-bottom: 14px; color: var(--text); }
+
+    .scroll-area ul { padding-left: 20px; margin-bottom: 14px; }
+    .scroll-area ul li { margin-bottom: 5px; }
+
+    .scroll-area a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s;
+    }
+
+    .scroll-area a:hover { border-bottom-color: var(--accent); }
+
+    a.wikilink { color: var(--accent2); font-style: italic; }
+    a.wikilink:hover { border-bottom-color: var(--accent2); }
+
+    /* ── Images ────────────────────────────────────────────── */
+    .scroll-area img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      margin: 24px 0;
+    }
+
+    .scroll-area img.small { max-width: 320px; }
+
+    .scroll-area img.inline {
+      display: inline;
+      margin: 0 6px;
+      vertical-align: middle;
+    }
+
+    figcaption {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: -16px;
+      margin-bottom: 24px;
     }
 
     /* ── Hamburger (mobile only) ───────────────────────────── */
     .hamburger {
       display: none;
       position: fixed;
-      top: 12px;
-      left: 12px;
+      top: 12px; left: 12px;
       z-index: 100;
       background: var(--bg-side);
       border: 1px solid var(--border);
@@ -265,18 +351,14 @@
 
     .hamburger span {
       display: block;
-      width: 18px;
-      height: 2px;
+      width: 18px; height: 2px;
       background: var(--text);
       border-radius: 2px;
       transition: background 0.15s;
     }
 
-    .hamburger:hover span {
-      background: var(--accent);
-    }
+    .hamburger:hover span { background: var(--accent); }
 
-    /* Overlay for mobile */
     .overlay {
       display: none;
       position: fixed;
@@ -287,78 +369,37 @@
 
     /* ── Responsive ────────────────────────────────────────── */
     @media (max-width: 680px) {
-      .hamburger {
-        display: flex;
-      }
+      .hamburger { display: flex; }
 
       .sidebar {
         position: fixed;
-        top: 0;
-        left: 0;
+        top: 0; left: 0;
         height: 100%;
         transform: translateX(-100%);
         z-index: 50;
       }
 
-      .sidebar.open {
-        transform: translateX(0);
-      }
+      .sidebar.open  { transform: translateX(0); }
+      .overlay.open  { display: block; }
 
-      .overlay.open {
-        display: block;
-      }
-
-      .content {
-        padding: 24px 20px;
-      }
-
-      .subnav {
-        padding: 0 16px;
-        padding-left: 52px; /* room for hamburger */
-      }
+      .subnav        { padding: 0 16px 0 52px; }
+      .featured      { padding: 16px 20px 20px; }
+      .scroll-area   { padding: 24px 20px 48px; }
+      .section-divider { padding: 0 20px; }
     }
-	/* ── Images ────────────────────────────────────────────── */
-	.content img {
- 	 max-width: 100%;
- 	 height: auto;
- 	 display: block;
-  	border: 1px solid var(--border);
-  	border-radius: 3px;
- 	 margin: 24px 0;
-	}
-
-	.content img.small {
- 	 max-width: 320px;
-	}
-
-	.content img.inline {
- 	 display: inline;
- 	 margin: 0 6px;
- 	 vertical-align: middle;
-	}
-
-	figcaption {
-  	font-family: var(--mono);
-  	font-size: 11px;
-  	color: var(--text-dim);
-  	margin-top: -16px;
-  	margin-bottom: 24px;
-	}
   </style>
 </head>
 <body>
 
-  <!-- Mobile hamburger -->
   <button class="hamburger" id="hamburger" aria-label="Open navigation">
     <span></span><span></span><span></span>
   </button>
 
-  <!-- Mobile overlay -->
   <div class="overlay" id="overlay"></div>
 
   <div class="layout">
 
-    <!-- ── Sidebar ── -->
+    <!-- ══ SIDEBAR ══════════════════════════════════════════ -->
     <nav class="sidebar" id="sidebar">
 
       <div class="sidebar-header">
@@ -366,132 +407,269 @@
         <div class="sidebar-subtitle">personal notes &amp; projects</div>
       </div>
 
-      <div class="nav-group">
+      <div class="nav-group open">
         <div class="nav-group-label">Kitchen</div>
-        <a href="cooking.html" class="nav-link">Cooking</a>
-        <a href="recipes.html" class="nav-link">Recipes</a>
+        <div class="nav-links">
+          <a href="cooking.html" class="nav-link">Cooking</a>
+          <a href="recipes.html" class="nav-link">Recipes</a>
+        </div>
       </div>
 
-      <div class="nav-group">
+      <div class="nav-group open">
         <div class="nav-group-label">Craft</div>
-        <a href="woodworking.html" class="nav-link">Woodworking</a>
-        <a href="metalcraft.html" class="nav-link">Metalcraft</a>
-        <a href="fabrication.html" class="nav-link">Fabrication</a>
-        <a href="leather.html" class="nav-link">Leather</a>
+        <div class="nav-links">
+          <a href="woodworking.html" class="nav-link">Woodworking</a>
+          <a href="metalcraft.html" class="nav-link">Metalcraft</a>
+          <a href="fabrication.html" class="nav-link">Fabrication</a>
+          <a href="leather.html" class="nav-link">Leather</a>
+        </div>
       </div>
 
       <div class="nav-group">
         <div class="nav-group-label">Art</div>
-        <a href="drawing.html" class="nav-link">Drawing</a>
-        <a href="art.html" class="nav-link">Art</a>
+        <div class="nav-links">
+          <a href="drawing.html" class="nav-link">Drawing</a>
+          <a href="art.html" class="nav-link">Art</a>
+        </div>
       </div>
 
       <div class="nav-group">
         <div class="nav-group-label">Mind</div>
-        <a href="books.html" class="nav-link">Books</a>
-        <a href="music.html" class="nav-link">Music</a>
-        <a href="writing.html" class="nav-link">Writing</a>
+        <div class="nav-links">
+          <a href="books.html" class="nav-link">Books</a>
+          <a href="music.html" class="nav-link">Music</a>
+          <a href="writing.html" class="nav-link">Writing</a>
+        </div>
       </div>
 
       <div class="nav-group">
         <div class="nav-group-label">Thought</div>
-        <a href="christianity.html" class="nav-link">Christianity</a>
-        <a href="ai.html" class="nav-link">Artificial Intelligence</a>
-        <a href="culture.html" class="nav-link">Culture</a>
-        <a href="philosophy.html" class="nav-link">Philosophy</a>
-        <a href="science.html" class="nav-link">Science</a>
-        <a href="language.html" class="nav-link">Language</a>
+        <div class="nav-links">
+          <a href="christianity.html" class="nav-link">Christianity</a>
+          <a href="ai.html" class="nav-link">Artificial Intelligence</a>
+          <a href="culture.html" class="nav-link">Culture</a>
+          <a href="philosophy.html" class="nav-link">Philosophy</a>
+          <a href="science.html" class="nav-link">Science</a>
+          <a href="language.html" class="nav-link">Language</a>
+        </div>
       </div>
 
       <div class="nav-group">
         <div class="nav-group-label">Life</div>
-        <a href="gardening.html" class="nav-link">Gardening</a>
-        <a href="home.html" class="nav-link">Home</a>
-        <a href="family.html" class="nav-link">Family</a>
+        <div class="nav-links">
+          <a href="gardening.html" class="nav-link">Gardening</a>
+          <a href="home.html" class="nav-link">Home</a>
+          <a href="family.html" class="nav-link">Family</a>
+        </div>
       </div>
 
     </nav>
 
-    <!-- ── Main ── -->
+    <!-- ══ MAIN ══════════════════════════════════════════════ -->
     <div class="main">
 
-      <!-- Sub-navigation (changes per section) -->
-      <div class="subnav">
+      <!-- SUBNAV — change label and buttons for each page -->
+      <div class="subnav" id="subnav">
         <span class="subnav-label">Recipes /</span>
-        <a href="#" class="subnav-link active">Overview</a>
-        <a href="#" class="subnav-link">Bread</a>
-        <a href="#" class="subnav-link">Soups</a>
-        <a href="#" class="subnav-link">Grilling</a>
-        <a href="#" class="subnav-link">Sauces</a>
-        <a href="#" class="subnav-link">Desserts</a>
+        <button class="subnav-btn active" data-panel="overview">Overview</button>
+        <button class="subnav-btn"        data-panel="bread">Bread</button>
+        <button class="subnav-btn"        data-panel="soups">Soups</button>
+        <button class="subnav-btn"        data-panel="grilling">Grilling</button>
+        <button class="subnav-btn"        data-panel="sauces">Sauces</button>
+        <button class="subnav-btn"        data-panel="desserts">Desserts</button>
       </div>
 
-      <!-- Content -->
-      <div class="content">
+      <!-- FEATURED — one panel per subnav button, same id pattern -->
+      <div class="featured">
+        <div class="featured-label">— selected —</div>
 
-        <div class="page-title">Recipes</div>
-        <div class="page-meta">last edited — whenever you want</div>
+        <div class="featured-panel active" id="panel-overview">
+          <h2>Overview</h2>
+          <p>A collection of things worth cooking. Click any category above to feature it here,
+            or scroll below to browse everything.</p>
+          <ul>
+            <li><a href="#">Start with bread</a></li>
+            <li><a href="#">What to do with leftovers</a></li>
+            <li><a href="cooking.html" class="wikilink">Cooking techniques →</a></li>
+          </ul>
+        </div>
 
-        <p>
-          This is your main content area. Text sits here in a readable column with comfortable line length. 
-          You can link to other pages like <a href="cooking.html">Cooking techniques</a> or reference 
-          related ideas like <a href="philosophy.html" class="wikilink">Philosophy of food</a>.
-        </p>
+        <div class="featured-panel" id="panel-bread">
+          <h2>Bread</h2>
+          <p>Sourdough, enriched doughs, flatbreads. Bread is patient work —
+            the process teaches as much as the result.</p>
+          <ul>
+            <li><a href="#">Sourdough starter notes</a></li>
+            <li><a href="#">No-knead overnight loaf</a></li>
+            <li><a href="#">Focaccia with rosemary</a></li>
+            <li><a href="#">Flour types and when to use them</a></li>
+          </ul>
+        </div>
 
-	<img src="images/tree1.jpg" alt="this is a tree">
+        <div class="featured-panel" id="panel-soups">
+          <h2>Soups</h2>
+          <p>Broths, bisques, chowders. A good soup is forgiving and deeply satisfying.
+            Most of these start with the same base.</p>
+          <ul>
+            <li><a href="#">French onion</a></li>
+            <li><a href="#">Roasted tomato</a></li>
+            <li><a href="#">Chicken and rice</a></li>
+            <li><a href="#">Building a good stock</a></li>
+          </ul>
+        </div>
 
-        <h2>Bread</h2>
-        <p>
-          A paragraph about bread goes here. Notice how the heading style uses the monospace font 
-          as a subtle label rather than shouting. Links within your content connect pages together 
-          the way Obsidian notes connect — building a web of related ideas over time.
-        </p>
-        <ul>
-          <li><a href="#">Sourdough starter notes</a></li>
-          <li><a href="#">No-knead overnight loaf</a></li>
-          <li><a href="#">Focaccia with rosemary</a></li>
-        </ul>
-	
-	<img src="images/tree1.jpg" alt="small tree" class="small">
+        <div class="featured-panel" id="panel-grilling">
+          <h2>Grilling</h2>
+          <p>Fire, smoke, patience. Understanding direct and indirect heat is the whole game.
+            The rest is practice and paying attention.</p>
+          <ul>
+            <li><a href="#">Reverse sear ribeye</a></li>
+            <li><a href="#">Smoked brisket notes</a></li>
+            <li><a href="#">Grilled vegetables</a></li>
+            <li><a href="#">Temperature guide</a></li>
+          </ul>
+        </div>
 
-        <hr class="divider">
+        <div class="featured-panel" id="panel-sauces">
+          <h2>Sauces</h2>
+          <p>The French mother sauces, pan sauces, fermented hot sauces.
+            A good sauce is often the difference between a meal and a memory.</p>
+          <ul>
+            <li><a href="#">Simple pan sauce method</a></li>
+            <li><a href="#">Fermented hot sauce</a></li>
+            <li><a href="#">Chimichurri</a></li>
+            <li><a href="#">Beurre blanc</a></li>
+          </ul>
+        </div>
 
-        <h2>Soups</h2>
-        <p>
-          Another section of content. The divider above gives visual breathing room between topics 
-          on the same page. For longer sections you would break these out into their own sub-pages 
-          and link them in the sub-navigation at the top.
-        </p>
+        <div class="featured-panel" id="panel-desserts">
+          <h2>Desserts</h2>
+          <p>Baking is more precise than cooking but no less rewarding.
+            These are the ones worth the effort.</p>
+          <ul>
+            <li><a href="#">Brown butter chocolate chip cookies</a></li>
+            <li><a href="#">Tarte tatin</a></li>
+            <li><a href="#">Crème brûlée notes</a></li>
+            <li><a href="#">Seasonal fruit crisp</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- DIVIDER -->
+      <div class="section-divider">
+        <span>all sections</span>
+      </div>
+
+      <!-- SCROLL AREA — full browsable content -->
+      <div class="scroll-area">
+
+        <section>
+          <h2>Bread</h2>
+          <p>Sourdough, enriched doughs, flatbreads, and everything in between.
+            Bread is patient work — the process teaches as much as the result.</p>
+          <ul>
+            <li><a href="#">Sourdough starter notes</a></li>
+            <li><a href="#">No-knead overnight loaf</a></li>
+            <li><a href="#">Focaccia with rosemary</a></li>
+            <li><a href="#">Flour types and when to use them</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Soups</h2>
+          <p>Broths, bisques, chowders. A good soup is forgiving and deeply satisfying.
+            Most of these start with the same base — learn that and the rest follows.</p>
+          <ul>
+            <li><a href="#">French onion</a></li>
+            <li><a href="#">Roasted tomato</a></li>
+            <li><a href="#">Chicken and rice</a></li>
+            <li><a href="#">Building a good stock</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Grilling</h2>
+          <p>Fire, smoke, patience. Understanding direct and indirect heat is the whole game.
+            The rest is just practice and paying attention.</p>
+          <ul>
+            <li><a href="#">Reverse sear ribeye</a></li>
+            <li><a href="#">Smoked brisket notes</a></li>
+            <li><a href="#">Grilled vegetables</a></li>
+            <li><a href="#">Temperature guide</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Sauces</h2>
+          <p>The French mother sauces, pan sauces, fermented hot sauces, and condiments.
+            A good sauce is often the difference between a meal and a memory.</p>
+          <ul>
+            <li><a href="#">Simple pan sauce method</a></li>
+            <li><a href="#">Fermented hot sauce</a></li>
+            <li><a href="#">Chimichurri</a></li>
+            <li><a href="#">Beurre blanc</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Desserts</h2>
+          <p>Baking is more precise than cooking but no less rewarding.
+            These are the ones worth the effort — nothing fussy for its own sake.</p>
+          <ul>
+            <li><a href="#">Brown butter chocolate chip cookies</a></li>
+            <li><a href="#">Tarte tatin</a></li>
+            <li><a href="#">Crème brûlée notes</a></li>
+            <li><a href="#">Seasonal fruit crisp</a></li>
+          </ul>
+        </section>
 
       </div>
     </div>
   </div>
 
   <script>
-    // Mobile sidebar toggle — about 15 lines
+    // ── Mobile sidebar ──────────────────────────────────────
     const hamburger = document.getElementById('hamburger');
     const sidebar   = document.getElementById('sidebar');
     const overlay   = document.getElementById('overlay');
 
-    function openSidebar() {
+    hamburger.addEventListener('click', () => {
       sidebar.classList.add('open');
       overlay.classList.add('open');
-    }
+    });
 
-    function closeSidebar() {
+    overlay.addEventListener('click', () => {
       sidebar.classList.remove('open');
       overlay.classList.remove('open');
-    }
+    });
 
-    hamburger.addEventListener('click', openSidebar);
-    overlay.addEventListener('click', closeSidebar);
+    // ── Collapsible nav groups ──────────────────────────────
+    document.querySelectorAll('.nav-group-label').forEach(label => {
+      label.addEventListener('click', () => {
+        label.parentElement.classList.toggle('open');
+      });
+    });
 
-    // Mark current page link as active
+    // ── Active sidebar link + auto-open its group ───────────
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll('.nav-link').forEach(link => {
       if (link.getAttribute('href') === currentPage) {
         link.classList.add('active');
+        link.closest('.nav-group').classList.add('open');
       }
+    });
+
+    // ── Featured panel swap ─────────────────────────────────
+    document.querySelectorAll('.subnav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.subnav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.getAttribute('data-panel');
+        document.querySelectorAll('.featured-panel').forEach(panel => {
+          panel.classList.toggle('active', panel.id === 'panel-' + target);
+        });
+      });
     });
   </script>
 
