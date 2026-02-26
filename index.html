@@ -3,29 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recipes</title>
+  <title>Your Name</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
-    /* ── Variables ─────────────────────────────────────────── */
     :root {
-      --bg:         #0d0d0d;
-      --bg-side:    #111111;
-      --bg-hover:   #1a1a1a;
-      --bg-feature: #141414;
-      --border:     #222222;
-      --border-hi:  #333333;
-      --text:       #c9c9c9;
-      --text-dim:   #c4c2c2;
-      --text-head:  #e8e8e8;
-      --accent:     #7aa2f7;
-      --accent2:    #bb9af7;
-      --sidebar-w:  220px;
-      --mono:       'JetBrains Mono', monospace;
-      --serif:      'Lora', Georgia, serif;
+      --bg:        #0d0d0d;
+      --bg-side:   #111111;
+      --bg-card:   #111111;
+      --bg-hover:  #1a1a1a;
+      --border:    #222222;
+      --text:      #c9c9c9;
+      --text-dim:  #555555;
+      --text-hi:   #e8e8e8;
+      --accent:    #7aa2f7;
+      --accent2:   #bb9af7;
+      --sidebar-w: 220px;
+      --mono:      'JetBrains Mono', monospace;
+      --serif:     'Lora', Georgia, serif;
     }
 
-    /* ── Reset ─────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
@@ -37,14 +34,13 @@
       line-height: 1.7;
     }
 
-    /* ── Root layout ───────────────────────────────────────── */
     .layout {
       display: flex;
       height: 100vh;
       overflow: hidden;
     }
 
-    /* ── Sidebar ───────────────────────────────────────────── */
+    /* ══ SIDEBAR ════════════════════════════════════════════ */
     .sidebar {
       width: var(--sidebar-w);
       min-width: var(--sidebar-w);
@@ -79,10 +75,25 @@
       margin-top: 4px;
     }
 
-    .nav-group { border-bottom: 1px solid var(--border); }
-    .nav-group:last-child { border-bottom: none; }
+    .show-all {
+      display: block;
+      padding: 10px 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.15s;
+      user-select: none;
+    }
 
-    .nav-group-label {
+    .show-all:hover { color: var(--accent); }
+    .show-all.active { color: var(--accent); }
+
+    .tag-group { border-bottom: 1px solid var(--border); }
+    .tag-group:last-child { border-bottom: none; }
+
+    .tag-group-label {
       font-family: var(--mono);
       font-size: 10px;
       font-weight: 500;
@@ -98,51 +109,41 @@
       transition: color 0.15s;
     }
 
-    .nav-group-label:hover { color: var(--text); }
+    .tag-group-label:hover { color: var(--text); }
+    .tag-group-label::after { content: '›'; font-size: 14px; transition: transform 0.2s ease; }
+    .tag-group.open .tag-group-label::after { transform: rotate(90deg); }
 
-    .nav-group-label::after {
-      content: '›';
-      font-size: 14px;
-      transition: transform 0.2s ease;
-    }
+    .tag-group-links { overflow: hidden; max-height: 0; transition: max-height 0.25s ease; }
+    .tag-group.open .tag-group-links { max-height: 600px; padding-bottom: 8px; }
 
-    .nav-group.open .nav-group-label::after { transform: rotate(90deg); }
-
-    .nav-links {
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.25s ease;
-    }
-
-    .nav-group.open .nav-links {
-      max-height: 500px;
-      padding-bottom: 8px;
-    }
-
-    .nav-link {
-      display: block;
+    .tag-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 5px 16px 5px 24px;
       font-family: var(--mono);
       font-size: 12.5px;
       color: var(--text);
-      text-decoration: none;
+      cursor: pointer;
       transition: background 0.15s, color 0.15s;
       border-left: 2px solid transparent;
+      user-select: none;
     }
 
-    .nav-link:hover {
+    .tag-link:hover { background: var(--bg-hover); color: var(--text-hi); border-left-color: var(--accent); }
+    .tag-link.active { color: var(--accent); border-left-color: var(--accent); background: var(--bg-hover); }
+
+    .tag-count {
+      font-size: 10px;
+      color: var(--text-dim);
       background: var(--bg-hover);
-      color: var(--text-head);
-      border-left-color: var(--accent);
+      padding: 1px 5px;
+      border-radius: 2px;
     }
 
-    .nav-link.active {
-      color: var(--accent);
-      border-left-color: var(--accent);
-      background: var(--bg-hover);
-    }
+    .tag-link.active .tag-count { color: var(--accent); }
 
-    /* ── Main column ───────────────────────────────────────── */
+    /* ══ MAIN ═══════════════════════════════════════════════ */
     .main {
       flex: 1;
       display: flex;
@@ -150,191 +151,164 @@
       overflow: hidden;
     }
 
-    /* ── Subnav ────────────────────────────────────────────── */
-    .subnav {
+    .topbar {
       background: var(--bg-side);
       border-bottom: 1px solid var(--border);
-      padding: 0 28px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      min-height: 42px;
-      flex-wrap: wrap;
-      flex-shrink: 0;
-    }
-
-    .subnav-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--text-dim);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-right: 8px;
-    }
-
-    .subnav-btn {
-      font-family: var(--mono);
-      font-size: 11.5px;
-      color: var(--text-dim);
-      background: none;
-      border: none;
-      padding: 4px 10px;
-      border-radius: 3px;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .subnav-btn:hover { background: var(--bg-hover); color: var(--accent2); }
-    .subnav-btn.active { color: var(--accent2); background: var(--bg-hover); }
-
-    /* ── Featured block ────────────────────────────────────── */
-    .featured {
-      background: var(--bg-feature);
-      border-bottom: 1px solid var(--border-hi);
-      padding: 22px 36px 26px;
-      flex-shrink: 0;
-    }
-
-    .featured-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--text-dim);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .featured-panel { display: none; }
-    .featured-panel.active { display: block; }
-
-    .featured-panel h2 {
-      font-family: var(--mono);
-      font-size: 16px;
-      font-weight: 500;
-      color: var(--text-head);
-      margin-bottom: 10px;
-    }
-
-    .featured-panel p {
-      color: var(--text);
-      max-width: 680px;
-      margin-bottom: 12px;
-      font-size: 15px;
-    }
-
-    .featured-panel ul {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px 20px;
-      list-style: none;
-      padding: 0;
-    }
-
-    .featured-panel ul li a {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--accent);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.15s;
-    }
-
-    .featured-panel ul li a:hover { border-bottom-color: var(--accent); }
-
-    /* ── Section divider ───────────────────────────────────── */
-    .section-divider {
+      padding: 0 24px;
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 0 36px;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
+      min-height: 44px;
       flex-shrink: 0;
-      min-height: 32px;
     }
 
-    .section-divider span {
+    .active-filter {
       font-family: var(--mono);
-      font-size: 9px;
+      font-size: 10px;
       color: var(--text-dim);
-      letter-spacing: 0.15em;
       text-transform: uppercase;
+      letter-spacing: 0.1em;
       white-space: nowrap;
     }
 
-    .section-divider::after {
-      content: '';
+    .active-filter span { color: var(--accent); }
+
+    .search-input {
       flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    /* ── Scroll area ───────────────────────────────────────── */
-    .scroll-area {
-      flex: 1;
-      overflow-y: auto;
-      padding: 36px 36px 60px;
-      max-width: 100%;
-    }
-
-    .scroll-area section { margin-bottom: 48px; }
-
-    .scroll-area h2 {
-      font-family: var(--mono);
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
+      background: none;
+      border: none;
       border-bottom: 1px solid var(--border);
-    }
-
-    .scroll-area p { margin-bottom: 14px; color: var(--text); }
-
-    .scroll-area ul { padding-left: 20px; margin-bottom: 14px; }
-    .scroll-area ul li { margin-bottom: 5px; }
-
-    .scroll-area a {
-      color: var(--accent);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
+      padding: 4px 0;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text);
+      outline: none;
       transition: border-color 0.15s;
     }
 
-    .scroll-area a:hover { border-bottom-color: var(--accent); }
+    .search-input::placeholder { color: var(--text-dim); }
+    .search-input:focus { border-bottom-color: var(--accent); }
 
+    .result-count {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+
+    .block-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px 60px;
+    }
+
+    /* ── Block card ────────────────────────────────────────── */
+    .block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-bottom: 8px;
+      transition: border-color 0.15s;
+      overflow: hidden;
+    }
+
+    .block:hover { border-color: #2a2a2a; }
+    .block.hidden { display: none; }
+
+    .block-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .block-arrow {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-dim);
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+      width: 12px;
+    }
+
+    .block.open .block-arrow { transform: rotate(90deg); }
+
+    .block-title {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--text-hi);
+      flex: 1;
+    }
+
+    .block-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .block-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+
+    .block-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 2px;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .block-tag:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    .block-date {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    .block-body {
+      display: none;
+      padding: 14px 14px 18px 36px;
+      border-top: 1px solid var(--border);
+    }
+
+    .block.open .block-body { display: block; }
+
+    .block-body p { margin-bottom: 14px; font-size: 15px; color: var(--text); }
+    .block-body p:last-child { margin-bottom: 0; }
+
+    .block-body h3 {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin: 16px 0 8px;
+    }
+
+    .block-body ul { padding-left: 20px; margin-bottom: 14px; }
+    .block-body ul li { margin-bottom: 4px; font-size: 15px; }
+
+    .block-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s; }
+    .block-body a:hover { border-bottom-color: var(--accent); }
     a.wikilink { color: var(--accent2); font-style: italic; }
     a.wikilink:hover { border-bottom-color: var(--accent2); }
 
-    /* ── Images ────────────────────────────────────────────── */
-    .scroll-area img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      margin: 24px 0;
-    }
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
 
-    .scroll-area img.small { max-width: 320px; }
+    .block-body img { max-width: 100%; height: auto; display: block; border: 1px solid var(--border); border-radius: 3px; margin: 16px 0; }
+    .block-body img.small { max-width: 320px; }
 
-    .scroll-area img.inline {
-      display: inline;
-      margin: 0 6px;
-      vertical-align: middle;
-    }
+    figcaption { font-family: var(--mono); font-size: 11px; color: var(--text-dim); margin-top: -10px; margin-bottom: 16px; }
 
-    figcaption {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
-      margin-top: -16px;
-      margin-bottom: 24px;
-    }
+    .empty { display: none; font-family: var(--mono); font-size: 12px; color: var(--text-dim); padding: 48px 0; text-align: center; }
+    .empty.visible { display: block; }
 
-    /* ── Hamburger (mobile only) ───────────────────────────── */
+    /* ── Hamburger ─────────────────────────────────────────── */
     .hamburger {
       display: none;
       position: fixed;
@@ -349,43 +323,18 @@
       gap: 4px;
     }
 
-    .hamburger span {
-      display: block;
-      width: 18px; height: 2px;
-      background: var(--text);
-      border-radius: 2px;
-      transition: background 0.15s;
-    }
-
+    .hamburger span { display: block; width: 18px; height: 2px; background: var(--text); border-radius: 2px; transition: background 0.15s; }
     .hamburger:hover span { background: var(--accent); }
 
-    .overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 9;
-    }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9; }
 
-    /* ── Responsive ────────────────────────────────────────── */
     @media (max-width: 680px) {
       .hamburger { display: flex; }
-
-      .sidebar {
-        position: fixed;
-        top: 0; left: 0;
-        height: 100%;
-        transform: translateX(-100%);
-        z-index: 50;
-      }
-
-      .sidebar.open  { transform: translateX(0); }
-      .overlay.open  { display: block; }
-
-      .subnav        { padding: 0 16px 0 52px; }
-      .featured      { padding: 16px 20px 20px; }
-      .scroll-area   { padding: 24px 20px 48px; }
-      .section-divider { padding: 0 20px; }
+      .sidebar { position: fixed; top: 0; left: 0; height: 100%; transform: translateX(-100%); z-index: 50; }
+      .sidebar.open { transform: translateX(0); }
+      .overlay.open { display: block; }
+      .topbar { padding: 0 16px 0 52px; }
+      .block-list { padding: 16px 16px 60px; }
     }
   </style>
 </head>
@@ -399,279 +348,338 @@
 
   <div class="layout">
 
-    <!-- ══ SIDEBAR ══════════════════════════════════════════ -->
     <nav class="sidebar" id="sidebar">
-
       <div class="sidebar-header">
         <div class="sidebar-title">Your Name</div>
-        <div class="sidebar-subtitle">personal notes &amp; projects</div>
+        <div class="sidebar-subtitle">notes &amp; links</div>
       </div>
-
-      <div class="nav-group open">
-        <div class="nav-group-label">Kitchen</div>
-        <div class="nav-links">
-          <a href="cooking.html" class="nav-link">Cooking</a>
-          <a href="recipes.html" class="nav-link">Recipes</a>
-        </div>
-      </div>
-
-      <div class="nav-group open">
-        <div class="nav-group-label">Craft</div>
-        <div class="nav-links">
-          <a href="woodworking.html" class="nav-link">Woodworking</a>
-          <a href="metalcraft.html" class="nav-link">Metalcraft</a>
-          <a href="fabrication.html" class="nav-link">Fabrication</a>
-          <a href="leather.html" class="nav-link">Leather</a>
-        </div>
-      </div>
-
-      <div class="nav-group">
-        <div class="nav-group-label">Art</div>
-        <div class="nav-links">
-          <a href="drawing.html" class="nav-link">Drawing</a>
-          <a href="art.html" class="nav-link">Art</a>
-        </div>
-      </div>
-
-      <div class="nav-group">
-        <div class="nav-group-label">Mind</div>
-        <div class="nav-links">
-          <a href="books.html" class="nav-link">Books</a>
-          <a href="music.html" class="nav-link">Music</a>
-          <a href="writing.html" class="nav-link">Writing</a>
-        </div>
-      </div>
-
-      <div class="nav-group">
-        <div class="nav-group-label">Thought</div>
-        <div class="nav-links">
-          <a href="christianity.html" class="nav-link">Christianity</a>
-          <a href="ai.html" class="nav-link">Artificial Intelligence</a>
-          <a href="culture.html" class="nav-link">Culture</a>
-          <a href="philosophy.html" class="nav-link">Philosophy</a>
-          <a href="science.html" class="nav-link">Science</a>
-          <a href="language.html" class="nav-link">Language</a>
-        </div>
-      </div>
-
-      <div class="nav-group">
-        <div class="nav-group-label">Life</div>
-        <div class="nav-links">
-          <a href="gardening.html" class="nav-link">Gardening</a>
-          <a href="home.html" class="nav-link">Home</a>
-          <a href="family.html" class="nav-link">Family</a>
-        </div>
-      </div>
-
+      <div class="show-all active" id="show-all">all blocks</div>
+      <div id="tag-groups"></div>
     </nav>
 
-    <!-- ══ MAIN ══════════════════════════════════════════════ -->
     <div class="main">
-
-      <!-- SUBNAV — change label and buttons for each page -->
-      <div class="subnav" id="subnav">
-        <span class="subnav-label">Recipes /</span>
-        <button class="subnav-btn active" data-panel="overview">Overview</button>
-        <button class="subnav-btn"        data-panel="bread">Bread</button>
-        <button class="subnav-btn"        data-panel="soups">Soups</button>
-        <button class="subnav-btn"        data-panel="grilling">Grilling</button>
-        <button class="subnav-btn"        data-panel="sauces">Sauces</button>
-        <button class="subnav-btn"        data-panel="desserts">Desserts</button>
+      <div class="topbar">
+        <div class="active-filter" id="active-filter">showing <span>all</span></div>
+        <input class="search-input" id="search" type="text" placeholder="search...">
+        <div class="result-count" id="result-count"></div>
       </div>
-
-      <!-- FEATURED — one panel per subnav button, same id pattern -->
-      <div class="featured">
-        <div class="featured-label">— selected —</div>
-
-        <div class="featured-panel active" id="panel-overview">
-          <h2>Overview</h2>
-          <p>A collection of things worth cooking. Click any category above to feature it here,
-            or scroll below to browse everything.</p>
-          <ul>
-            <li><a href="#">Start with bread</a></li>
-            <li><a href="#">What to do with leftovers</a></li>
-            <li><a href="cooking.html" class="wikilink">Cooking techniques →</a></li>
-          </ul>
-        </div>
-
-        <div class="featured-panel" id="panel-bread">
-          <h2>Bread</h2>
-          <p>Sourdough, enriched doughs, flatbreads. Bread is patient work —
-            the process teaches as much as the result.</p>
-          <ul>
-            <li><a href="#">Sourdough starter notes</a></li>
-            <li><a href="#">No-knead overnight loaf</a></li>
-            <li><a href="#">Focaccia with rosemary</a></li>
-            <li><a href="#">Flour types and when to use them</a></li>
-          </ul>
-        </div>
-
-        <div class="featured-panel" id="panel-soups">
-          <h2>Soups</h2>
-          <p>Broths, bisques, chowders. A good soup is forgiving and deeply satisfying.
-            Most of these start with the same base.</p>
-          <ul>
-            <li><a href="#">French onion</a></li>
-            <li><a href="#">Roasted tomato</a></li>
-            <li><a href="#">Chicken and rice</a></li>
-            <li><a href="#">Building a good stock</a></li>
-          </ul>
-        </div>
-
-        <div class="featured-panel" id="panel-grilling">
-          <h2>Grilling</h2>
-          <p>Fire, smoke, patience. Understanding direct and indirect heat is the whole game.
-            The rest is practice and paying attention.</p>
-          <ul>
-            <li><a href="#">Reverse sear ribeye</a></li>
-            <li><a href="#">Smoked brisket notes</a></li>
-            <li><a href="#">Grilled vegetables</a></li>
-            <li><a href="#">Temperature guide</a></li>
-          </ul>
-        </div>
-
-        <div class="featured-panel" id="panel-sauces">
-          <h2>Sauces</h2>
-          <p>The French mother sauces, pan sauces, fermented hot sauces.
-            A good sauce is often the difference between a meal and a memory.</p>
-          <ul>
-            <li><a href="#">Simple pan sauce method</a></li>
-            <li><a href="#">Fermented hot sauce</a></li>
-            <li><a href="#">Chimichurri</a></li>
-            <li><a href="#">Beurre blanc</a></li>
-          </ul>
-        </div>
-
-        <div class="featured-panel" id="panel-desserts">
-          <h2>Desserts</h2>
-          <p>Baking is more precise than cooking but no less rewarding.
-            These are the ones worth the effort.</p>
-          <ul>
-            <li><a href="#">Brown butter chocolate chip cookies</a></li>
-            <li><a href="#">Tarte tatin</a></li>
-            <li><a href="#">Crème brûlée notes</a></li>
-            <li><a href="#">Seasonal fruit crisp</a></li>
-          </ul>
-        </div>
-
-      </div>
-
-      <!-- DIVIDER -->
-      <div class="section-divider">
-        <span>all sections</span>
-      </div>
-
-      <!-- SCROLL AREA — full browsable content -->
-      <div class="scroll-area">
-
-        <section>
-          <h2>Bread</h2>
-          <p>Sourdough, enriched doughs, flatbreads, and everything in between.
-            Bread is patient work — the process teaches as much as the result.</p>
-          <ul>
-            <li><a href="#">Sourdough starter notes</a></li>
-            <li><a href="#">No-knead overnight loaf</a></li>
-            <li><a href="#">Focaccia with rosemary</a></li>
-            <li><a href="#">Flour types and when to use them</a></li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Soups</h2>
-          <p>Broths, bisques, chowders. A good soup is forgiving and deeply satisfying.
-            Most of these start with the same base — learn that and the rest follows.</p>
-          <ul>
-            <li><a href="#">French onion</a></li>
-            <li><a href="#">Roasted tomato</a></li>
-            <li><a href="#">Chicken and rice</a></li>
-            <li><a href="#">Building a good stock</a></li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Grilling</h2>
-          <p>Fire, smoke, patience. Understanding direct and indirect heat is the whole game.
-            The rest is just practice and paying attention.</p>
-          <ul>
-            <li><a href="#">Reverse sear ribeye</a></li>
-            <li><a href="#">Smoked brisket notes</a></li>
-            <li><a href="#">Grilled vegetables</a></li>
-            <li><a href="#">Temperature guide</a></li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Sauces</h2>
-          <p>The French mother sauces, pan sauces, fermented hot sauces, and condiments.
-            A good sauce is often the difference between a meal and a memory.</p>
-          <ul>
-            <li><a href="#">Simple pan sauce method</a></li>
-            <li><a href="#">Fermented hot sauce</a></li>
-            <li><a href="#">Chimichurri</a></li>
-            <li><a href="#">Beurre blanc</a></li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Desserts</h2>
-          <p>Baking is more precise than cooking but no less rewarding.
-            These are the ones worth the effort — nothing fussy for its own sake.</p>
-          <ul>
-            <li><a href="#">Brown butter chocolate chip cookies</a></li>
-            <li><a href="#">Tarte tatin</a></li>
-            <li><a href="#">Crème brûlée notes</a></li>
-            <li><a href="#">Seasonal fruit crisp</a></li>
-          </ul>
-        </section>
-
-      </div>
+      <div class="block-list" id="block-list"></div>
+      <div class="empty" id="empty">nothing matches</div>
     </div>
+
   </div>
 
-  <script>
-    // ── Mobile sidebar ──────────────────────────────────────
-    const hamburger = document.getElementById('hamburger');
-    const sidebar   = document.getElementById('sidebar');
-    const overlay   = document.getElementById('overlay');
+<script>
 
-    hamburger.addEventListener('click', () => {
-      sidebar.classList.add('open');
-      overlay.classList.add('open');
+// ════════════════════════════════════════════════════════════
+// TAG GROUPS — sidebar sections
+//
+// To add a new group:
+//   { label: "Group Name", tags: ["tag1", "tag2"] },
+//
+// Groups with no used tags are hidden automatically.
+// ════════════════════════════════════════════════════════════
+
+const TAG_GROUPS = [
+  { label: "Kitchen",  tags: ["recipe", "cooking", "fermentation", "technique"] },
+  { label: "Craft",    tags: ["woodworking", "metalcraft", "fabrication", "leather"] },
+  { label: "Art",      tags: ["drawing", "art"] },
+  { label: "Mind",     tags: ["books", "music", "writing"] },
+  { label: "Thought",  tags: ["christianity", "ai", "culture", "philosophy", "science", "language"] },
+  { label: "Life",     tags: ["gardening", "home", "family"] },
+  { label: "Type",     tags: ["idea", "note", "reference", "question", "link"] },
+];
+
+
+// ════════════════════════════════════════════════════════════
+// TAGS — all available tags
+//
+// To add a new tag:
+//   1. Add it here:  "mytag": { label: "My Tag" },
+//   2. Add the key to a TAG_GROUP above
+//   3. Use it in a block's tags array below
+// ════════════════════════════════════════════════════════════
+
+const TAGS = {
+  "recipe":       { label: "Recipe"       },
+  "cooking":      { label: "Cooking"      },
+  "fermentation": { label: "Fermentation" },
+  "technique":    { label: "Technique"    },
+  "woodworking":  { label: "Woodworking"  },
+  "metalcraft":   { label: "Metalcraft"   },
+  "fabrication":  { label: "Fabrication"  },
+  "leather":      { label: "Leather"      },
+  "drawing":      { label: "Drawing"      },
+  "art":          { label: "Art"          },
+  "books":        { label: "Books"        },
+  "music":        { label: "Music"        },
+  "writing":      { label: "Writing"      },
+  "christianity": { label: "Christianity" },
+  "ai":           { label: "AI"           },
+  "culture":      { label: "Culture"      },
+  "philosophy":   { label: "Philosophy"   },
+  "science":      { label: "Science"      },
+  "language":     { label: "Language"     },
+  "gardening":    { label: "Gardening"    },
+  "home":         { label: "Home"         },
+  "family":       { label: "Family"       },
+  "idea":         { label: "Idea"         },
+  "note":         { label: "Note"         },
+  "reference":    { label: "Reference"    },
+  "question":     { label: "Question"     },
+  "link":         { label: "Link"         },
+};
+
+
+// ════════════════════════════════════════════════════════════
+// BLOCKS — your content lives here
+//
+// Add new blocks at the TOP of this array (newest first).
+//
+// Template — copy and paste to add a block:
+//
+//   {
+//     title: "Your title here",
+//     date:  "2026-02-25",
+//     tags:  ["note"],
+//     body:  `<p>Your content here.</p>`
+//   },
+//
+// body supports full HTML:
+//   <p>paragraph</p>
+//   <h3>subheading</h3>
+//   <ul><li>list item</li></ul>
+//   <a href="..." class="wikilink">linked idea →</a>
+//   <hr class="divider">
+//   <img src="images/photo.jpg" alt="description">
+// ════════════════════════════════════════════════════════════
+
+const blocks = [
+
+  {
+    title: "Reverse sear is the only way to cook a thick steak",
+    date:  "2026-02-20",
+    tags:  ["recipe", "technique", "note"],
+    body: `
+      <p>After years of direct sear I finally tried reverse sear on a thick ribeye
+      and there is no going back. Edge-to-edge even cook changes everything.</p>
+      <p>Low oven at 250°F until 125°F internal, then ripping hot cast iron for the crust.
+      The dry brine the night before is not optional.</p>
+      <p>See also: <a href="#" class="wikilink">compound butter →</a></p>
+    `
+  },
+
+  {
+    title: "The difference between stock and broth",
+    date:  "2026-02-18",
+    tags:  ["cooking", "reference"],
+    body: `
+      <p>Stock is made from bones, broth from meat. Stock has gelatin from collagen
+      which gives body and richness. Broth is thinner and more flavorful on its own.</p>
+      <p>For sauces and braises you almost always want stock. Most store-bought
+      labeled "broth" is actually closer to a weak stock.</p>
+    `
+  },
+
+  {
+    title: "Does fermentation temperature actually matter for sourdough?",
+    date:  "2026-02-15",
+    tags:  ["question", "fermentation", "recipe"],
+    body: `
+      <p>I have been bulk fermenting at whatever temperature the kitchen happens to be.
+      Need to test this properly. Warmer kitchen speeds up fermentation significantly.</p>
+      <p>Conventional wisdom: 78°F for 4 hours vs 68°F for 6–8 hours. Cooler and longer
+      is supposed to produce more complexity in flavor.</p>
+    `
+  },
+
+  {
+    title: "Maillard reaction vs caramelization — not the same thing",
+    date:  "2026-02-12",
+    tags:  ["reference", "science", "cooking"],
+    body: `
+      <p>These get conflated constantly. Two different chemical processes that both
+      produce browning and flavor.</p>
+      <p>Maillard is a reaction between amino acids and sugars around 280–330°F.
+      Responsible for bread crust, seared meat, roasted coffee.</p>
+      <p>Caramelization is the thermal decomposition of sugar above 320°F.
+      Responsible for caramel, toffee, browned onions.</p>
+    `
+  },
+
+  {
+    title: "Obsidian and the idea of linked thinking",
+    date:  "2026-02-10",
+    tags:  ["idea", "philosophy", "writing"],
+    body: `
+      <p>The folder is the wrong metaphor for knowledge. Knowledge is not hierarchical,
+      it is associative. One idea connects to another regardless of category.</p>
+      <p>Obsidian works because the link is the primary unit, not the folder.
+      The graph emerges from writing — it is not imposed before writing begins.</p>
+      <p>A system that requires perfect organization before you can start will always
+      fail because the organization only becomes obvious after the thinking is done.</p>
+    `
+  },
+
+  {
+    title: "Try focaccia with bread flour instead of all-purpose",
+    date:  "2026-02-08",
+    tags:  ["idea", "recipe", "fermentation"],
+    body: `
+      <p>Most focaccia recipes call for all-purpose. Higher protein bread flour should
+      give more chew and structure. Hydration probably needs to go up to around 80%.</p>
+      <p>Worth a side by side test on the same day so variables are controlled.</p>
+    `
+  },
+
+];
+
+
+// ════════════════════════════════════════════════════════════
+// ENGINE — do not edit below this line
+// ════════════════════════════════════════════════════════════
+
+let activeTag = null;
+let queryStr  = '';
+
+function tagCount(key) {
+  return blocks.filter(b => (b.tags || []).includes(key)).length;
+}
+
+// Build sidebar
+const groupContainer = document.getElementById('tag-groups');
+
+TAG_GROUPS.forEach(group => {
+  const usedTags = group.tags.filter(t => tagCount(t) > 0);
+  if (usedTags.length === 0) return;
+
+  const div = document.createElement('div');
+  div.className = 'tag-group open';
+
+  const label = document.createElement('div');
+  label.className = 'tag-group-label';
+  label.textContent = group.label;
+  label.addEventListener('click', () => div.classList.toggle('open'));
+  div.appendChild(label);
+
+  const links = document.createElement('div');
+  links.className = 'tag-group-links';
+
+  usedTags.forEach(key => {
+    const tag = TAGS[key];
+    if (!tag) return;
+    const link = document.createElement('div');
+    link.className = 'tag-link';
+    link.dataset.tag = key;
+    link.innerHTML = `<span>${tag.label}</span><span class="tag-count">${tagCount(key)}</span>`;
+    link.addEventListener('click', () => setTag(key));
+    links.appendChild(link);
+  });
+
+  div.appendChild(links);
+  groupContainer.appendChild(div);
+});
+
+// Render blocks
+const list = document.getElementById('block-list');
+
+blocks.forEach((block, i) => {
+  const el = document.createElement('div');
+  el.className = 'block';
+  el.id = 'block-' + i;
+  el.dataset.title = block.title.toLowerCase();
+  el.dataset.body  = block.body.replace(/<[^>]+>/g, '').toLowerCase();
+  el.dataset.tags  = (block.tags || []).join(' ');
+
+  const tagHTML = (block.tags || []).map(t =>
+    `<span class="block-tag" data-tag="${t}">${TAGS[t] ? TAGS[t].label : t}</span>`
+  ).join('');
+
+  el.innerHTML = `
+    <div class="block-header">
+      <span class="block-arrow">›</span>
+      <span class="block-title">${block.title}</span>
+      <div class="block-meta">
+        <div class="block-tags">${tagHTML}</div>
+        ${block.date ? `<span class="block-date">${block.date}</span>` : ''}
+      </div>
+    </div>
+    <div class="block-body">${block.body}</div>
+  `;
+
+  el.querySelector('.block-header').addEventListener('click', () => el.classList.toggle('open'));
+
+  el.querySelectorAll('.block-tag').forEach(tag => {
+    tag.addEventListener('click', e => { e.stopPropagation(); setTag(tag.dataset.tag); });
+  });
+
+  list.appendChild(el);
+});
+
+// Search
+document.getElementById('search').addEventListener('input', e => {
+  queryStr = e.target.value.toLowerCase().trim();
+  applyFilters();
+});
+
+function setTag(key) {
+  if (activeTag === key) {
+    activeTag = null;
+    document.getElementById('show-all').classList.add('active');
+    document.querySelectorAll('.tag-link').forEach(l => l.classList.remove('active'));
+    updateFilterLabel(null);
+  } else {
+    activeTag = key;
+    document.getElementById('show-all').classList.remove('active');
+    document.querySelectorAll('.tag-link').forEach(l => l.classList.toggle('active', l.dataset.tag === key));
+    updateFilterLabel(key);
+    document.querySelectorAll('.tag-link').forEach(l => {
+      if (l.dataset.tag === key) l.closest('.tag-group').classList.add('open');
     });
+  }
+  applyFilters();
+}
 
-    overlay.addEventListener('click', () => {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('open');
-    });
+document.getElementById('show-all').addEventListener('click', () => {
+  activeTag = null;
+  document.getElementById('show-all').classList.add('active');
+  document.querySelectorAll('.tag-link').forEach(l => l.classList.remove('active'));
+  updateFilterLabel(null);
+  applyFilters();
+});
 
-    // ── Collapsible nav groups ──────────────────────────────
-    document.querySelectorAll('.nav-group-label').forEach(label => {
-      label.addEventListener('click', () => {
-        label.parentElement.classList.toggle('open');
-      });
-    });
+function updateFilterLabel(key) {
+  const el = document.getElementById('active-filter');
+  el.innerHTML = key
+    ? `showing <span>${TAGS[key] ? TAGS[key].label : key}</span>`
+    : 'showing <span>all</span>';
+}
 
-    // ── Active sidebar link + auto-open its group ───────────
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.nav-link').forEach(link => {
-      if (link.getAttribute('href') === currentPage) {
-        link.classList.add('active');
-        link.closest('.nav-group').classList.add('open');
-      }
-    });
+function applyFilters() {
+  let visible = 0;
+  document.querySelectorAll('.block').forEach(el => {
+    const matchTag    = !activeTag || el.dataset.tags.split(' ').includes(activeTag);
+    const matchSearch = !queryStr  || el.dataset.title.includes(queryStr) || el.dataset.body.includes(queryStr);
+    el.classList.toggle('hidden', !(matchTag && matchSearch));
+    if (matchTag && matchSearch) visible++;
+  });
 
-    // ── Featured panel swap ─────────────────────────────────
-    document.querySelectorAll('.subnav-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.subnav-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const target = btn.getAttribute('data-panel');
-        document.querySelectorAll('.featured-panel').forEach(panel => {
-          panel.classList.toggle('active', panel.id === 'panel-' + target);
-        });
-      });
-    });
-  </script>
+  const total = blocks.length;
+  document.getElementById('result-count').textContent =
+    visible === total ? `${total} blocks` : `${visible} of ${total}`;
+  document.getElementById('empty').classList.toggle('visible', visible === 0);
+}
 
+// Mobile
+const hamburger = document.getElementById('hamburger');
+const sidebar   = document.getElementById('sidebar');
+const overlay   = document.getElementById('overlay');
+
+hamburger.addEventListener('click', () => { sidebar.classList.add('open'); overlay.classList.add('open'); });
+overlay.addEventListener('click',   () => { sidebar.classList.remove('open'); overlay.classList.remove('open'); });
+
+applyFilters();
+
+</script>
 </body>
 </html>
