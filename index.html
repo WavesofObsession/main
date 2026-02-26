@@ -335,6 +335,15 @@
     a.wikilink { color: var(--accent2); font-style: italic; }
     a.wikilink:hover { border-bottom-color: var(--accent2); }
 
+    .block-footer {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
     hr.divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
 
     .block-body img { max-width: 100%; height: auto; display: block; border: 1px solid var(--border); border-radius: 3px; margin: 16px 0; }
@@ -506,6 +515,7 @@ const blocks = [
         full of next things to do. The weather is starting to change slightly, I have some seedling started in the window. 
       </p>
       <p>Come back to this later....</p>
+      <a href="#obsidian-linked-thinking" class="wikilink">linked thinking →</a>
     `
   },
 
@@ -584,11 +594,12 @@ const blocks = [
 
   {
     title: "Obsidian and the idea of linked thinking",
+    slug: "obsidian-linked-thinking",
     date:  "2026-02-10",
     tags:  ["idea", "philosophy", "writing"],
     body: `
-      <p>The folder is the wrong metaphor for knowledge. Knowledge is not hierarchical,
-      it is associative. One idea connects to another regardless of category.</p>
+      <p>The folder is the wrong metaphor for knowledge, folders hold information. Knowledge is not hierarchical,
+      it is associative, remember to know is like "Adam knew Eve", knowledge is intimate. One idea connects to another regardless of category.</p>
       <p>Obsidian works because the link is the primary unit, not the folder.
       The graph emerges from writing — it is not imposed before writing begins.</p>
       <p>A system that requires perfect organization before you can start will always
@@ -661,7 +672,7 @@ const list = document.getElementById('block-list');
 blocks.forEach((block, i) => {
   const el = document.createElement('div');
   el.className = 'block';
-  el.id = 'block-' + i;
+  el.id = block.slug || 'block-' + i;
   el.dataset.title = block.title.toLowerCase();
   el.dataset.body  = block.body.replace(/<[^>]+>/g, '').toLowerCase();
   el.dataset.tags  = (block.tags || []).join(' ');
@@ -678,8 +689,12 @@ blocks.forEach((block, i) => {
         ${block.date ? `<span class="block-date">${block.date}</span>` : ''}
       </div>
     </div>
-    <div class="block-body">${block.body}</div>
-    <div class="block-tags">${tagHTML}</div>
+    <div class="block-body">
+      ${block.body}
+      <div class="block-footer">
+        <div class="block-tags">${tagHTML}</div>
+      </div>
+    </div>
   `;
 
   el.querySelector('.block-header').addEventListener('click', () => el.classList.toggle('open'));
@@ -744,6 +759,19 @@ function applyFilters() {
     visible === total ? `${total} blocks` : `${visible} of ${total}`;
   document.getElementById('empty').classList.toggle('visible', visible === 0);
 }
+
+// Wikilinks — clicking a wikilink opens and scrolls to the target block
+document.getElementById('block-list').addEventListener('click', e => {
+  const link = e.target.closest('a.wikilink');
+  if (!link) return;
+  const href = link.getAttribute('href');
+  if (!href || href === '#') return;
+  const target = document.querySelector(href);
+  if (!target) return;
+  e.preventDefault();
+  target.classList.add('open');
+  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 
 // Mobile
 const hamburger = document.getElementById('hamburger');
