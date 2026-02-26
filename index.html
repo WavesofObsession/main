@@ -675,11 +675,11 @@ blocks.forEach((block, i) => {
       <span class="block-arrow">›</span>
       <span class="block-title">${block.title}</span>
       <div class="block-meta">
-        <div class="block-tags">${tagHTML}</div>
         ${block.date ? `<span class="block-date">${block.date}</span>` : ''}
       </div>
     </div>
     <div class="block-body">${block.body}</div>
+    <div class="block-tags">${tagHTML}</div>
   `;
 
   el.querySelector('.block-header').addEventListener('click', () => el.classList.toggle('open'));
