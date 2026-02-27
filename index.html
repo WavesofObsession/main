@@ -96,6 +96,27 @@
       border-bottom: 1px solid var(--border);
     }
 
+    .sidebar-header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .sidebar-close {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 2px;
+      line-height: 1;
+      transition: color 0.15s;
+      margin-top: 2px;
+    }
+
+    .sidebar-close:hover { color: var(--text-hi); }
+
     .sidebar-title {
       font-family: var(--mono);
       font-size: 13px;
@@ -233,6 +254,17 @@
       white-space: nowrap;
     }
 
+    .kb-hint {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      opacity: 0.5;
+      white-space: nowrap;
+      cursor: default;
+    }
+
+    @media (max-width: 680px) { .kb-hint { display: none; } }
+
     .block-list {
       flex: 1;
       overflow-y: auto;
@@ -250,6 +282,8 @@
     }
 
     .block:hover { border-color: #2a2a2a; }
+    .block.open  { border-color: #2a2a2a; }
+    .block.open .block-header { background: var(--bg-hover); border-left: 2px solid var(--accent); }
     .block.hidden { display: none; }
 
     .block-header {
@@ -270,7 +304,7 @@
       width: 12px;
     }
 
-    .block.open .block-arrow { transform: rotate(90deg); }
+    .block.open .block-arrow { transform: rotate(90deg); color: var(--accent); }
 
     .block-title {
       font-family: var(--mono);
@@ -381,6 +415,7 @@
       .overlay.open { display: block; }
       .topbar { padding: 0 16px 0 52px; }
       .block-list { padding: 16px 16px 60px; }
+      .sidebar-close { display: block; }
     }
   </style>
 </head>
@@ -396,8 +431,13 @@
 
     <nav class="sidebar" id="sidebar">
       <div class="sidebar-header">
-        <div class="sidebar-title">Waves Of Obsession</div>
-        <div class="sidebar-subtitle">notes &amp; links</div>
+        <div class="sidebar-header-top">
+          <div>
+            <div class="sidebar-title">Waves Of Obsession</div>
+            <div class="sidebar-subtitle">notes &amp; links</div>
+          </div>
+          <button class="sidebar-close" id="sidebar-close" aria-label="Close navigation">✕</button>
+        </div>
       </div>
       <div class="show-all active" id="show-all">all blocks</div>
       <div id="tag-groups"></div>
@@ -408,6 +448,7 @@
         <div class="active-filter" id="active-filter">showing <span>all</span></div>
         <input class="search-input" id="search" type="text" placeholder="search...">
         <div class="result-count" id="result-count"></div>
+        <div class="kb-hint" title="Arrow keys to navigate, Enter to toggle, Escape to close">↑↓ nav</div>
       </div>
       <div class="block-list" id="block-list"></div>
       <div class="empty" id="empty">nothing matches</div>
@@ -543,14 +584,17 @@ const blocks = [
 
   {
     title: "Reverse sear is the only way to cook a thick steak",
+    slug:  "reverse-sear",
     date:  "2026-02-20",
     tags:  ["recipe", "technique", "note"],
     body: `
       <p>After years of direct sear I finally tried reverse sear on a thick ribeye
       and there is no going back. Edge-to-edge even cook changes everything.</p>
+      <img src="images/reverse-sear.jpg" alt="Reverse seared ribeye resting on a cast iron pan">
+      <figcaption>Drop your own photo here — images/reverse-sear.jpg</figcaption>
       <p>Low oven at 250°F until 125°F internal, then ripping hot cast iron for the crust.
       The dry brine the night before is not optional.</p>
-      <p>See also: <a href="#" class="wikilink">compound butter →</a></p>
+      <p>See also: <a href="#maillard-caramelization" class="wikilink">Maillard vs caramelization →</a></p>
     `
   },
 
@@ -580,11 +624,14 @@ const blocks = [
 
   {
     title: "Maillard reaction vs caramelization — not the same thing",
+    slug:  "maillard-caramelization",
     date:  "2026-02-12",
     tags:  ["reference", "science", "cooking"],
     body: `
       <p>These get conflated constantly. Two different chemical processes that both
       produce browning and flavor.</p>
+      <img src="images/maillard-caramelization.jpg" alt="Diagram comparing Maillard and caramelization browning reactions">
+      <figcaption>Drop your own photo here — images/maillard-caramelization.jpg</figcaption>
       <p>Maillard is a reaction between amino acids and sugars around 280–330°F.
       Responsible for bread crust, seared meat, roasted coffee.</p>
       <p>Caramelization is the thermal decomposition of sugar above 320°F.
@@ -600,10 +647,13 @@ const blocks = [
     body: `
       <p>The folder is the wrong metaphor for knowledge, folders hold information. Knowledge is not hierarchical,
       it is associative, remember to know is like "Adam knew Eve", knowledge is intimate. One idea connects to another regardless of category.</p>
+      <img src="images/obsidian-graph.jpg" alt="Obsidian knowledge graph showing linked notes">
+      <figcaption>Drop your own screenshot here — images/obsidian-graph.jpg</figcaption>
       <p>Obsidian works because the link is the primary unit, not the folder.
       The graph emerges from writing — it is not imposed before writing begins.</p>
       <p>A system that requires perfect organization before you can start will always
       fail because the organization only becomes obvious after the thinking is done.</p>
+      <p>See also: <a href="#block-0" class="wikilink">Systems over Goals →</a></p>
     `
   },
 
@@ -697,7 +747,7 @@ blocks.forEach((block, i) => {
     </div>
   `;
 
-  el.querySelector('.block-header').addEventListener('click', () => el.classList.toggle('open'));
+  el.querySelector('.block-header').addEventListener('click', () => toggleBlock(el));
 
   el.querySelectorAll('.block-tag').forEach(tag => {
     tag.addEventListener('click', e => { e.stopPropagation(); setTag(tag.dataset.tag); });
@@ -760,7 +810,16 @@ function applyFilters() {
   document.getElementById('empty').classList.toggle('visible', visible === 0);
 }
 
-// Wikilinks — clicking a wikilink opens and scrolls to the target block
+// ── Accordion toggle ────────────────────────────────────────
+function toggleBlock(el) {
+  const isOpen = el.classList.contains('open');
+  // Close all open blocks
+  document.querySelectorAll('.block.open').forEach(b => b.classList.remove('open'));
+  // If it wasn't open, open it
+  if (!isOpen) el.classList.add('open');
+}
+
+// ── Wikilinks — scroll to & open target block ────────────────
 document.getElementById('block-list').addEventListener('click', e => {
   const link = e.target.closest('a.wikilink');
   if (!link) return;
@@ -769,8 +828,43 @@ document.getElementById('block-list').addEventListener('click', e => {
   const target = document.querySelector(href);
   if (!target) return;
   e.preventDefault();
+  // Close others, open target
+  document.querySelectorAll('.block.open').forEach(b => b.classList.remove('open'));
   target.classList.add('open');
-  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+});
+
+// ── Keyboard navigation ──────────────────────────────────────
+document.addEventListener('keydown', e => {
+  // Don't fire when typing in the search box
+  if (document.activeElement === document.getElementById('search')) return;
+
+  const visible = [...document.querySelectorAll('.block:not(.hidden)')];
+  if (visible.length === 0) return;
+
+  const openBlock = document.querySelector('.block.open');
+  const currentIndex = openBlock ? visible.indexOf(openBlock) : -1;
+
+  if (e.key === 'ArrowDown' || e.key === 'j') {
+    e.preventDefault();
+    const next = visible[currentIndex + 1] || visible[0];
+    document.querySelectorAll('.block.open').forEach(b => b.classList.remove('open'));
+    next.classList.add('open');
+    next.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } else if (e.key === 'ArrowUp' || e.key === 'k') {
+    e.preventDefault();
+    const prev = visible[currentIndex - 1] || visible[visible.length - 1];
+    document.querySelectorAll('.block.open').forEach(b => b.classList.remove('open'));
+    prev.classList.add('open');
+    prev.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } else if (e.key === 'Enter' || e.key === ' ') {
+    if (openBlock) {
+      e.preventDefault();
+      openBlock.classList.toggle('open');
+    }
+  } else if (e.key === 'Escape') {
+    if (openBlock) openBlock.classList.remove('open');
+  }
 });
 
 // Mobile
@@ -780,6 +874,7 @@ const overlay   = document.getElementById('overlay');
 
 hamburger.addEventListener('click', () => { sidebar.classList.add('open'); overlay.classList.add('open'); });
 overlay.addEventListener('click',   () => { sidebar.classList.remove('open'); overlay.classList.remove('open'); });
+document.getElementById('sidebar-close').addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('open'); });
 
 applyFilters();
 
