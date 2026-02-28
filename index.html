@@ -3,54 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Name</title>
+  <title>Waves Of Obsession</title>
   <style>
     @font-face {
-  font-family: 'JetBrains Mono';
-  src: url('fonts/jetbrains-mono-400.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
+      font-family: 'JetBrains Mono';
+      src: url('fonts/jetbrains-mono-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'JetBrains Mono';
+      src: url('fonts/jetbrains-mono-500.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Lora';
+      src: url('fonts/lora-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Lora';
+      src: url('fonts/lora-400-italic.woff2') format('woff2');
+      font-weight: 400;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Lora';
+      src: url('fonts/lora-500.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
 
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('fonts/jetbrains-mono-500.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Lora';
-  src: url('fonts/lora-400.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Lora';
-  src: url('fonts/lora-400-italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Lora';
-  src: url('fonts/lora-500.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
     :root {
       --bg:        #0d0d0d;
       --bg-side:   #111111;
       --bg-card:   #111111;
       --bg-hover:  #1a1a1a;
-      --border:    #222222;
-      --text:      #c9c9c9;
+      --border:    #525151;
+      --text:      #b9b7b7;
       --text-dim:  #555555;
       --text-hi:   #e8e8e8;
       --accent:    #7aa2f7;
@@ -145,7 +142,7 @@
       user-select: none;
     }
 
-    .show-all:hover { color: var(--accent); }
+    .show-all:hover  { color: var(--accent); }
     .show-all.active { color: var(--accent); }
 
     .tag-group { border-bottom: 1px solid var(--border); }
@@ -171,8 +168,8 @@
     .tag-group-label::after { content: '›'; font-size: 14px; transition: transform 0.2s ease; }
     .tag-group.open .tag-group-label::after { transform: rotate(90deg); }
 
-    .tag-group-links { overflow: hidden; max-height: 0; transition: max-height 0.25s ease; }
-    .tag-group.open .tag-group-links { max-height: 600px; padding-bottom: 8px; }
+    .tag-group-links { overflow: hidden; max-height: 0; transition: max-height 0.3s ease; }
+    .tag-group.open .tag-group-links { max-height: 800px; padding-bottom: 8px; }
 
     .tag-link {
       display: flex;
@@ -254,86 +251,60 @@
       white-space: nowrap;
     }
 
-    .kb-hint {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--text-dim);
-      opacity: 0.5;
-      white-space: nowrap;
-      cursor: default;
-    }
-
-    @media (max-width: 680px) { .kb-hint { display: none; } }
-
+    /* ══ BLOCK LIST ═════════════════════════════════════════ */
     .block-list {
       flex: 1;
       overflow-y: auto;
-      padding: 20px 24px 60px;
+      padding: 16px;
     }
 
-    /* ── Block card ────────────────────────────────────────── */
     .block {
-      background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 3px;
       margin-bottom: 8px;
+      background: var(--bg-card);
       transition: border-color 0.15s;
-      overflow: hidden;
     }
 
-    .block:hover { border-color: #2a2a2a; }
-    .block.open  { border-color: #2a2a2a; }
-    .block.open .block-header { background: var(--bg-hover); border-left: 2px solid var(--accent); }
     .block.hidden { display: none; }
 
     .block-header {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 11px 14px;
+      align-items: baseline;
+      gap: 8px;
+      padding: 10px 14px;
       cursor: pointer;
       user-select: none;
+      transition: background 0.15s;
     }
+
+    .block-header:hover { background: var(--bg-hover); }
 
     .block-arrow {
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-dim);
-      transition: transform 0.2s ease;
+      transition: transform 0.2s ease, color 0.15s;
       flex-shrink: 0;
-      width: 12px;
     }
 
     .block.open .block-arrow { transform: rotate(90deg); color: var(--accent); }
 
     .block-title {
-      font-family: var(--mono);
-      font-size: 12.5px;
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 500;
       color: var(--text-hi);
       flex: 1;
+      line-height: 1.4;
     }
 
     .block-meta {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       flex-shrink: 0;
     }
-
-    .block-tags { display: flex; gap: 5px; flex-wrap: wrap; }
-
-    .block-tag {
-      font-family: var(--mono);
-      font-size: 10px;
-      padding: 1px 6px;
-      border-radius: 2px;
-      border: 1px solid var(--border);
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: border-color 0.15s, color 0.15s;
-    }
-
-    .block-tag:hover { border-color: var(--accent2); color: var(--accent2); }
 
     .block-date {
       font-family: var(--mono);
@@ -343,336 +314,967 @@
 
     .block-body {
       display: none;
-      padding: 14px 14px 18px 36px;
-      border-top: 1px solid var(--border);
+      padding: 0 14px 14px 34px;
+      font-size: 15px;
+      line-height: 1.75;
     }
 
     .block.open .block-body { display: block; }
 
-    .block-body p { margin-bottom: 14px; font-size: 15px; color: var(--text); }
+    .block-body p  { margin-bottom: 0.85em; }
     .block-body p:last-child { margin-bottom: 0; }
 
-    .block-body h3 {
+    .block-body h1,
+    .block-body h2,
+    .block-body h3,
+    .block-body h4 {
       font-family: var(--mono);
-      font-size: 11px;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin: 16px 0 8px;
+      color: var(--text-hi);
+      margin: 1.2em 0 0.5em;
+      font-weight: 500;
     }
 
-    .block-body ul { padding-left: 20px; margin-bottom: 14px; }
-    .block-body ul li { margin-bottom: 4px; font-size: 15px; }
+    .block-body h1 { font-size: 15px; }
+    .block-body h2 { font-size: 13px; letter-spacing: 0.05em; }
+    .block-body h3 { font-size: 12px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; }
+    .block-body h4 { font-size: 11px; color: var(--text-dim); }
 
-    .block-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s; }
-    .block-body a:hover { border-bottom-color: var(--accent); }
-    a.wikilink { color: var(--accent2); font-style: italic; }
-    a.wikilink:hover { border-bottom-color: var(--accent2); }
+    .block-body ul,
+    .block-body ol {
+      margin: 0 0 0.85em 1.2em;
+    }
+
+    .block-body li { margin-bottom: 0.25em; }
+
+    .block-body blockquote {
+      border-left: 2px solid var(--accent2);
+      margin: 0.5em 0 0.85em;
+      padding: 0.25em 0 0.25em 1em;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    .block-body code {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--bg-hover);
+      padding: 1px 5px;
+      border-radius: 2px;
+      color: var(--accent2);
+    }
+
+    .block-body hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1em 0;
+    }
+
+    .block-body a.wikilink {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s;
+    }
+
+    .block-body a.wikilink:hover { border-bottom-color: var(--accent); }
 
     .block-footer {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-      padding-top: 12px;
+      margin-top: 14px;
+      padding-top: 10px;
       border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    hr.divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+    .block-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
 
-    .block-body img { max-width: 100%; height: auto; display: block; border: 1px solid var(--border); border-radius: 3px; margin: 16px 0; }
-    .block-body img.small { max-width: 320px; }
+    .block-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      background: var(--bg-hover);
+      padding: 2px 7px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: color 0.15s, background 0.15s;
+      border: 1px solid transparent;
+    }
 
-    figcaption { font-family: var(--mono); font-size: 11px; color: var(--text-dim); margin-top: -10px; margin-bottom: 16px; }
+    .block-tag:hover { color: var(--accent); border-color: var(--accent); }
 
-    .empty { display: none; font-family: var(--mono); font-size: 12px; color: var(--text-dim); padding: 48px 0; text-align: center; }
+    /* ── Backlinks ─────────────────────────────────────────── */
+    .backlinks {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .backlinks-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      flex-shrink: 0;
+    }
+
+    .backlinks a.wikilink {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent2);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s;
+    }
+
+    .backlinks a.wikilink:hover { border-bottom-color: var(--accent2); }
+
+    /* ══ EMPTY STATE ════════════════════════════════════════ */
+    .empty {
+      display: none;
+      text-align: center;
+      padding: 60px 24px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
     .empty.visible { display: block; }
 
-    /* ── Hamburger ─────────────────────────────────────────── */
+    /* ══ MOBILE ═════════════════════════════════════════════ */
     .hamburger {
       display: none;
-      position: fixed;
-      top: 12px; left: 12px;
-      z-index: 100;
-      background: var(--bg-side);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 8px 10px;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 18px;
       cursor: pointer;
-      flex-direction: column;
-      gap: 4px;
+      padding: 0 4px;
+      transition: color 0.15s;
     }
 
-    .hamburger span { display: block; width: 18px; height: 2px; background: var(--text); border-radius: 2px; transition: background 0.15s; }
-    .hamburger:hover span { background: var(--accent); }
+    .hamburger:hover { color: var(--text-hi); }
 
-    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9; }
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 9;
+    }
 
-    @media (max-width: 680px) {
-      .hamburger { display: flex; }
-      .sidebar { position: fixed; top: 0; left: 0; height: 100%; transform: translateX(-100%); z-index: 50; }
+    @media (max-width: 640px) {
+      .sidebar {
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        transform: translateX(-100%);
+      }
+
       .sidebar.open { transform: translateX(0); }
       .overlay.open { display: block; }
-      .topbar { padding: 0 16px 0 52px; }
-      .block-list { padding: 16px 16px 60px; }
+      .hamburger    { display: block; }
       .sidebar-close { display: block; }
     }
   </style>
 </head>
 <body>
 
-  <button class="hamburger" id="hamburger" aria-label="Open navigation">
-    <span></span><span></span><span></span>
-  </button>
+<div class="overlay" id="overlay"></div>
 
-  <div class="overlay" id="overlay"></div>
+<div class="layout">
 
-  <div class="layout">
-
-    <nav class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <div class="sidebar-header-top">
-          <div>
-            <div class="sidebar-title">Waves Of Obsession</div>
-            <div class="sidebar-subtitle">notes &amp; links</div>
-          </div>
-          <button class="sidebar-close" id="sidebar-close" aria-label="Close navigation">✕</button>
+  <!-- ── Sidebar ─────────────────────────────────────────── -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-header-top">
+        <div>
+          <div class="sidebar-title">Waves of Obsession</div>
+          <div class="sidebar-subtitle">a mind in motion</div>
         </div>
+        <button class="sidebar-close" id="sidebar-close" aria-label="Close sidebar">✕</button>
       </div>
-      <div class="show-all active" id="show-all">all blocks</div>
-      <div id="tag-groups"></div>
-    </nav>
-
-    <div class="main">
-      <div class="topbar">
-        <div class="active-filter" id="active-filter">showing <span>all</span></div>
-        <input class="search-input" id="search" type="text" placeholder="search...">
-        <div class="result-count" id="result-count"></div>
-        <div class="kb-hint" title="Arrow keys to navigate, Enter to toggle, Escape to close">↑↓ nav</div>
-      </div>
-      <div class="block-list" id="block-list"></div>
-      <div class="empty" id="empty">nothing matches</div>
     </div>
 
+    <div class="show-all active" id="show-all">all notes</div>
+    <div id="tag-groups"></div>
+  </nav>
+
+  <!-- ── Main ────────────────────────────────────────────── -->
+  <div class="main">
+    <div class="topbar">
+      <button class="hamburger" id="hamburger" aria-label="Open sidebar">☰</button>
+      <div class="active-filter" id="active-filter">showing <span>all</span></div>
+      <input class="search-input" id="search" type="search" placeholder="search…" autocomplete="off" spellcheck="false">
+      <div class="result-count" id="result-count"></div>
+    </div>
+
+    <div class="block-list" id="block-list">
+      <div class="empty" id="empty">no notes match</div>
+    </div>
   </div>
 
+</div>
+
 <script>
-
 // ════════════════════════════════════════════════════════════
-// TAG GROUPS — sidebar sections
-//
-// To add a new group:
-//   { label: "Group Name", tags: ["tag1", "tag2"] },
-//
-// Groups with no used tags are hidden automatically.
-// ════════════════════════════════════════════════════════════
-
-const TAG_GROUPS = [
-  { label: "Kitchen",  tags: ["recipe", "cooking", "fermentation", "technique"] },
-  { label: "Craft",    tags: ["woodworking", "metalcraft", "fabrication", "leather"] },
-  { label: "Art",      tags: ["drawing", "art"] },
-  { label: "Mind",     tags: ["books", "music", "writing"] },
-  { label: "Thought",  tags: ["christianity", "ai", "culture", "philosophy", "science", "language"] },
-  { label: "Life",     tags: ["gardening", "home", "family"] },
-  { label: "Type",     tags: ["idea", "note", "reference", "question", "link"] },
-];
-
-
-// ════════════════════════════════════════════════════════════
-// TAGS — all available tags
-//
-// To add a new tag:
-//   1. Add it here:  "mytag": { label: "My Tag" },
-//   2. Add the key to a TAG_GROUP above
-//   3. Use it in a block's tags array below
+// TAG DEFINITIONS
+// Add or remove tags here as your vocabulary grows.
+// Each tag needs: label (display name)
+// Group them however makes sense to you.
 // ════════════════════════════════════════════════════════════
 
 const TAGS = {
-  "recipe":       { label: "Recipe"       },
-  "cooking":      { label: "Cooking"      },
-  "fermentation": { label: "Fermentation" },
-  "technique":    { label: "Technique"    },
-  "woodworking":  { label: "Woodworking"  },
-  "metalcraft":   { label: "Metalcraft"   },
-  "fabrication":  { label: "Fabrication"  },
-  "leather":      { label: "Leather"      },
-  "drawing":      { label: "Drawing"      },
-  "art":          { label: "Art"          },
-  "books":        { label: "Books"        },
-  "music":        { label: "Music"        },
-  "writing":      { label: "Writing"      },
-  "christianity": { label: "Christianity" },
-  "ai":           { label: "AI"           },
-  "culture":      { label: "Culture"      },
-  "philosophy":   { label: "Philosophy"   },
-  "science":      { label: "Science"      },
-  "language":     { label: "Language"     },
-  "gardening":    { label: "Gardening"    },
-  "home":         { label: "Home"         },
-  "family":       { label: "Family"       },
-  "idea":         { label: "Idea"         },
-  "note":         { label: "Note"         },
-  "reference":    { label: "Reference"    },
-  "question":     { label: "Question"     },
-  "link":         { label: "Link"         },
+  // Craft & Making
+  woodworking:  { label: 'Woodworking' },
+  metalwork:    { label: 'Metalwork' },
+  leather:      { label: 'Leathercraft' },
+  fabrication:  { label: 'Fabrication' },
+  gardening:    { label: 'Gardening' },
+
+  // Mind & Spirit
+  philosophy:   { label: 'Philosophy' },
+  faith:        { label: 'Faith' },
+  bible:        { label: 'Bible' },
+  christianity: { label: 'Christianity' },
+
+  // Food
+  cooking:      { label: 'Cooking' },
+  recipe:       { label: 'Recipe' },
+  fermentation: { label: 'Fermentation' },
+
+  // Knowledge
+  history:      { label: 'History' },
+  science:      { label: 'Science' },
+  language:     { label: 'Language' },
+  research:     { label: 'Research' },
+  reference:    { label: 'Reference' },
+
+  // Story & Art
+  writing:      { label: 'Writing' },
+  story:        { label: 'Story' },
+  art:          { label: 'Art' },
+  book:        { label: 'Book' },
+
+  // Life
+  family:       { label: 'Family' },
+  culture:      { label: 'Culture' },
+  gaming:       { label: 'Gaming' },
+
+  // Meta
+  idea:         { label: 'Idea' },
 };
 
-
-// ════════════════════════════════════════════════════════════
-// BLOCKS — your content lives here
-//
-// Add new blocks at the TOP of this array (newest first).
-//
-// Template — copy and paste to add a block:
-//
-//   {
-//     title: "Your title here",
-//     date:  "2026-02-25",
-//     tags:  ["note"],
-//     body:  `<p>Your content here.</p>`
-//   },
-//
-// body supports full HTML:
-//   <p>paragraph</p>
-//   <h3>subheading</h3>
-//   <ul><li>list item</li></ul>
-//   <a href="..." class="wikilink">linked idea →</a>
-//   <hr class="divider">
-//   <img src="images/photo.jpg" alt="description">
-// ════════════════════════════════════════════════════════════
-
-const blocks = [
-
-  {
-    title: "Systems over Goals",
-    date:  "2026-02-20",
-    tags:  ["idea", "note"],
-    body: `
-      <p>This website is a system not a goal. 
-        Copy a block, write out your thought, idea, note, concept, book review, recipe, etc. 
-        Move forward and write it out, clean it up later, fix it later, do the next thing, then do the next thing then do the next thing. 
-        Remember that even telling yourself "I do not know what to do" is the next thing, you can loop it, make it happen because you choose to 
-        perform a negation, and it happens, you do NOT know what to do next, and then you do nothing. Maintain the chain, move forward, have a large bucket 
-        full of next things to do. The weather is starting to change slightly, I have some seedling started in the window. 
-      </p>
-      <p>Come back to this later....</p>
-      <a href="#obsidian-linked-thinking" class="wikilink">linked thinking →</a>
-    `
-  },
-
-  {
-    title: "What do you know about attention?",
-    date:  "2026-02-20",
-    tags:  ["idea", "note"],
-    body: `
-      <p>I have spent the last few weeks, thinking deeply about attention. 
-      I have begun to view it like a magnetic field that radiates from my core. 
-      Every moment of day this field is being pulled or deformed by the "things" around me. 
-      I am fascinated by the cell phone in particular, in the short form to be direct. 
-      The phone acts like a strong magnet, attracting all of your attention field into this small rectangular frame, 
-      your peripheral vison goes, then your hearing and before your know it your wife is yelling at you, 
-      asking "Did you even hear a word I just said!". We freely allow our field to be highjacked, yes we could say 
-      </p>
-      <p>"there is a war going on for our minds", however it is one of consent, we choose to give up our attention. 
-      Call it a field, or think of it as a resource with a transaction, a limited account with dwindling funds. 
-      I have taken a short departure from these things that "steal" my attention, I find no profit in them at this time. 
-      </p>
-      <p>Come back to this later....</p>
-      <p>See also: <a href="#" class="wikilink">William James The Principles of Psycholgy →</a></p>
-    `
-  },
-
-  {
-    title: "Reverse sear is the only way to cook a thick steak",
-    slug:  "reverse-sear",
-    date:  "2026-02-20",
-    tags:  ["recipe", "technique", "note"],
-    body: `
-      <p>After years of direct sear I finally tried reverse sear on a thick ribeye
-      and there is no going back. Edge-to-edge even cook changes everything.</p>
-      <img src="images/reverse-sear.jpg" alt="Reverse seared ribeye resting on a cast iron pan">
-      <figcaption>Drop your own photo here — images/reverse-sear.jpg</figcaption>
-      <p>Low oven at 250°F until 125°F internal, then ripping hot cast iron for the crust.
-      The dry brine the night before is not optional.</p>
-      <p>See also: <a href="#maillard-caramelization" class="wikilink">Maillard vs caramelization →</a></p>
-    `
-  },
-
-  {
-    title: "The difference between stock and broth",
-    date:  "2026-02-18",
-    tags:  ["cooking", "reference"],
-    body: `
-      <p>Stock is made from bones, broth from meat. Stock has gelatin from collagen
-      which gives body and richness. Broth is thinner and more flavorful on its own.</p>
-      <p>For sauces and braises you almost always want stock. Most store-bought
-      labeled "broth" is actually closer to a weak stock.</p>
-    `
-  },
-
-  {
-    title: "Does fermentation temperature actually matter for sourdough?",
-    date:  "2026-02-15",
-    tags:  ["question", "fermentation", "recipe"],
-    body: `
-      <p>I have been bulk fermenting at whatever temperature the kitchen happens to be.
-      Need to test this properly. Warmer kitchen speeds up fermentation significantly.</p>
-      <p>Conventional wisdom: 78°F for 4 hours vs 68°F for 6–8 hours. Cooler and longer
-      is supposed to produce more complexity in flavor.</p>
-    `
-  },
-
-  {
-    title: "Maillard reaction vs caramelization — not the same thing",
-    slug:  "maillard-caramelization",
-    date:  "2026-02-12",
-    tags:  ["reference", "science", "cooking"],
-    body: `
-      <p>These get conflated constantly. Two different chemical processes that both
-      produce browning and flavor.</p>
-      <img src="images/maillard-caramelization.jpg" alt="Diagram comparing Maillard and caramelization browning reactions">
-      <figcaption>Drop your own photo here — images/maillard-caramelization.jpg</figcaption>
-      <p>Maillard is a reaction between amino acids and sugars around 280–330°F.
-      Responsible for bread crust, seared meat, roasted coffee.</p>
-      <p>Caramelization is the thermal decomposition of sugar above 320°F.
-      Responsible for caramel, toffee, browned onions.</p>
-    `
-  },
-
-  {
-    title: "Obsidian and the idea of linked thinking",
-    slug: "obsidian-linked-thinking",
-    date:  "2026-02-10",
-    tags:  ["idea", "philosophy", "writing"],
-    body: `
-      <p>The folder is the wrong metaphor for knowledge, folders hold information. Knowledge is not hierarchical,
-      it is associative, remember to know is like "Adam knew Eve", knowledge is intimate. One idea connects to another regardless of category.</p>
-      <img src="images/obsidian-graph.jpg" alt="Obsidian knowledge graph showing linked notes">
-      <figcaption>Drop your own screenshot here — images/obsidian-graph.jpg</figcaption>
-      <p>Obsidian works because the link is the primary unit, not the folder.
-      The graph emerges from writing — it is not imposed before writing begins.</p>
-      <p>A system that requires perfect organization before you can start will always
-      fail because the organization only becomes obvious after the thinking is done.</p>
-      <p>See also: <a href="#block-0" class="wikilink">Systems over Goals →</a></p>
-    `
-  },
-
-  {
-    title: "Try focaccia with bread flour instead of all-purpose",
-    date:  "2026-02-08",
-    tags:  ["idea", "recipe", "fermentation"],
-    body: `
-      <p>Most focaccia recipes call for all-purpose. Higher protein bread flour should
-      give more chew and structure. Hydration probably needs to go up to around 80%.</p>
-      <p>Worth a side by side test on the same day so variables are controlled.</p>
-    `
-  },
-
+const TAG_GROUPS = [
+  { label: 'Craft & Making',  tags: ['woodworking','metalwork','leather','fabrication','gardening'] },
+  { label: 'Mind & Spirit',   tags: ['philosophy','faith','bible','christianity'] },
+  { label: 'Food',            tags: ['cooking','recipe','fermentation'] },
+  { label: 'Knowledge',       tags: ['history','science','language','research','reference'] },
+  { label: 'Story & Art',     tags: ['writing','story','art','book'] },
+  { label: 'Life',            tags: ['family','culture','gaming'] },
+  { label: 'Meta',            tags: ['idea'] },
 ];
 
+// ════════════════════════════════════════════════════════════
+// BLOCKS — generated by build.py, do not edit by hand
+// ════════════════════════════════════════════════════════════
+
+/* @@BEGIN_BLOCKS@@ */
+const blocks = [
+  {
+    title: "IV. Meaning and Myth",
+    slug:  "iv-meaning-and-myth",
+    date:  "2026-02-28",
+    tags:  ["book"],
+    body: `
+      <p>Research</p>
+      <p>Owen Barfield</p>
+      <p><a href="#poetic-diction-a-study-in-meaning" class="wikilink">Poetic Diction A Study in Meaning →</a></p>
+      <div class="backlinks"><span class="backlinks-label">linked from</span><a href="#poetic-diction-a-study-in-meaning" class="wikilink">Poetic Diction A Study in Meaning →</a></div>
+    `,
+  },
+  {
+    title: "Poetic Diction A Study in Meaning",
+    slug:  "poetic-diction-a-study-in-meaning",
+    date:  "2026-02-28",
+    tags:  ["book", "idea"],
+    body: `
+      <p>Research</p>
+      <p>Owen Barfield</p>
+      <p>Chapters:</p>
+      <p>Preface to First Edition</p>
+      <p>Preface to Second Edition</p>
+      <p><a href="#poetic-diction-chapter-i-definition-and-examples" class="wikilink">Poetic Diction Chapter I. Definition and Examples →</a></p>
+      <p><a href="#poetic-diction-chapter-ii-the-effects-of-poetry" class="wikilink">Poetic Diction Chapter II. The Effects of Poetry →</a></p>
+      <p><a href="#poetic-diction-chapter-iii-metaphor" class="wikilink">Poetic Diction Chapter III. Metaphor →</a></p>
+      <p><a href="#iv-meaning-and-myth" class="wikilink">IV. Meaning and Myth →</a></p>
+      <p>V. Language and Poetry</p>
+      <p>VI. The Poet</p>
+      <p>VII. The Making of Meaning (I)</p>
+      <p>VIII. The Making of Meaning (II)</p>
+      <p>IX. Verse and Prose</p>
+      <p>X. Archaism</p>
+      <p>XI. Strangeness</p>
+      <p>XII. Conclusion</p>
+      <div class="backlinks"><span class="backlinks-label">linked from</span><a href="#iv-meaning-and-myth" class="wikilink">IV. Meaning and Myth →</a> <a href="#poetic-diction-chapter-i-definition-and-examples" class="wikilink">Poetic Diction Chapter I. Definition and Examples →</a> <a href="#poetic-diction-chapter-ii-the-effects-of-poetry" class="wikilink">Poetic Diction Chapter II. The Effects of Poetry →</a> <a href="#poetic-diction-chapter-iii-metaphor" class="wikilink">Poetic Diction Chapter III. Metaphor →</a></div>
+    `,
+  },
+  {
+    title: "Poetic Diction Chapter I. Definition and Examples",
+    slug:  "poetic-diction-chapter-i-definition-and-examples",
+    date:  "2026-02-28",
+    tags:  ["book"],
+    body: `
+      <p>Research</p>
+      <p>Owen Barfield</p>
+      <p><a href="#poetic-diction-a-study-in-meaning" class="wikilink">Poetic Diction A Study in Meaning →</a></p>
+      <p>Next Chapter: <a href="#poetic-diction-chapter-ii-the-effects-of-poetry" class="wikilink">Poetic Diction Chapter II. The Effects of Poetry →</a></p>
+      <p><strong>Section 1:</strong></p>
+      <p>"OB; When words are selected and arranged in such a way that their meaning either arouses, or is obviously intended to arouse, aesthetic imagination the result may be described as xxxxxpoetic diction."!ElevenLabs_2025-06-13T02_04_55_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>aesthetic imagination creates pleasure by the mere act of working</p>
+      <p>Meaning is contextual, more than the actual sounds, words and groups of words arranged in a particular order must include their whole content</p>
+      <p>"OB; Thus, this book is concerned, with a realm of human experience in which such an expression as 'prophets old' may, and probably will, 'mean' something quite different from 'old prophets'."!ElevenLabs_2025-06-13T02_06_16_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>What is poetry? No one knows, but can we at least agree that it is more than sounds waves vibrating from vocal cords or scribbled ink marks on paper and that it primarily exists in the world of consciousness?</p>
+      <p>"OB; Language itself, we feel, only springs into being as it is uttered by men, or heard by men, or thought by men."!ElevenLabs_2025-06-13T02_07_35_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>Poetry is more than the signs or sounds, the same sounds and signs can be vehicles of poetry here and not there, in this time not that, for you and not me.</p>
+      <p>Lockhart's attack in _Blackwood's_ of John Keats famous poem Endymion</p>
+      <p>: http://www.john-keats.com/biografie/blackwood.htm</p>
+      <p>From the article: "For some time we were in hopes, that he might get off with a violent fit or two; but of late the symptoms are terrible. The phrenzy of the _Poems_ was bad enough in its way; but it did not alarm us half so seriously as the calm, settled, imperturbable driveling idiocy of _Endymion_."</p>
+      <p>Lockhart did not consider this work a vehicles of poetry</p>
+      <p>For Owen Barfield the few intro sections of the book The Ring and The Book by Robert Browning is not a vehicles of poetry</p>
+      <p>Someone named john Robinson from Bethnal Green did not consider Paradise Lost a vehicles of poetry</p>
+      <p>This is foundational</p>
+      <p>We could chastise these people for their lack of requisite sensibility, unless with forceful hyperbole to accuse them for mistaking something that is or is not poetry.</p>
+      <p>"OB; The question of whether or not I can call a given group of words 'poetry' is, in fact, immediately dependent on my own inner experiences; and in constructing a theory of poetic diction, it is from those experiences that I am obliged to start."!ElevenLabs_2025-06-13T02_09_18_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>Considering the personal direction taken by some literary criticism let us bring attention, that to start from direct experience does not necessitate that we finish with direct experience.</p>
+      <p>You could start from direct experience, devoid of prejudice for arriving with an objective standard used for criticism, a standard used by a young critic to aid them in eliminating their personal affections and connections, to remove those accidents and reveal the substance of poetry because those accidents distort our judgement</p>
+      <p>What is poetry?</p>
+      <p>Examples:</p>
+      <p>Poetic Diction Example I</p>
+      <p>Poetic Diction Example II</p>
+      <p>Poetic Diction Example III</p>
+      <p>Poetic Diction Example VI</p>
+      <div class="backlinks"><span class="backlinks-label">linked from</span><a href="#poetic-diction-a-study-in-meaning" class="wikilink">Poetic Diction A Study in Meaning →</a> <a href="#poetic-diction-chapter-ii-the-effects-of-poetry" class="wikilink">Poetic Diction Chapter II. The Effects of Poetry →</a></div>
+    `,
+  },
+  {
+    title: "Poetic Diction Chapter II. The Effects of Poetry",
+    slug:  "poetic-diction-chapter-ii-the-effects-of-poetry",
+    date:  "2026-02-28",
+    tags:  ["book"],
+    body: `
+      <p>Research</p>
+      <p>Owen Barfield</p>
+      <p><a href="#poetic-diction-a-study-in-meaning" class="wikilink">Poetic Diction A Study in Meaning →</a></p>
+      <p>Previous Chapter: <a href="#poetic-diction-chapter-i-definition-and-examples" class="wikilink">Poetic Diction Chapter I. Definition and Examples →</a></p>
+      <p>Next Chapter: <a href="#poetic-diction-chapter-iii-metaphor" class="wikilink">Poetic Diction Chapter III. Metaphor →</a></p>
+      <h2>The Effects of Poetry</h2>
+      <h3>Pleasure and Knowledge</h3>
+      <h3>[1] Consider Poetic Diction Example II and Poetic Diction Example VI</h3>
+      <p>- One of the causes for pleasure is palpably, the sound; the rhythm, the music, and the connection with sense.</p>
+      <ul><li>The sound of language is important for poetic meaning, a strange connection with the vocal organs and the body, and later in <a href="#poetic-diction-chapter-iii-metaphor" class="wikilink">Poetic Diction Chapter III. Metaphor →</a> the correspondences</li></ul>	- "OB; It has a bearing, too, on the essentially active nature of the poetic consciousness, which is one of the findings of this book."!ElevenLabs_2025-06-13T02_03_29_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3
+      <ul><li>But the sound is a deep topic, subtle and delicate, then words undergo change over time, now difficult to theorize and illustrate with examples. </li><li>In practice it can be topically possible to separate intellectual elements in poetic meaning from the tonal; and with more than one topic, handle each separately.</li><li>Thus sound is outside the province of poetic diction, discussed no further.</li></ul>
+      <h3>[2] Tell me more about this aesthetic imagination</h3>
+      <ul><li>It can be experienced as a 'felt change of consciousness', where 'consciousness' is complete awareness of your surroundings including your own feelings, and this 'felt' is something noticed or attended to.</li><li>Consider Poetic Diction Example I</li></ul>	- Imagine standing on a pier watching a boat enter the bay, it has three-masts, a steam engine, and two funnels.
+      <p>- The meaning that the pier surroundings brings to me, depends upon the concepts I have learned and applied since childhood.</p>
+      <p>- In childhood we unite 'percepts and percept complex's' to form concept's about the phenomenon in question</p>
+      <p>- These 'percepts' are the elements in experience independent from mental activity, past or present, only the pure-sense datum.</p>
+      <p>- The concepts found in these English words may fill your experience;</p>
+      <p>- mast, mechanical propulsion, steam, coal, smoke</p>
+      <p>- chimney for smoke to escape by</p>
+      <p>All of these words fuse together in my own unique and habitual idea of 'steam boat'</p>
+      <ul><li>"OB; It is this idea which determines for me the quality, or meaning, of my immediate experience in observation"!ElevenLabs_2025-06-13T01_33_17_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</li><li>Consider Poetic Diction Example I </li></ul>	- <em>Thlee-piecee bamboo, two-piecee puff-puff, walk inside, no-can-see</em>
+      <ul><li>Allow yourself to experience a different kind of consciousness</li></ul>	- You can see the 'steam boat' through the eyes of a primitive South-Sea Islander
+      <p>- Their experience, and meaning is vastly different from ours, produced from different concepts</p>
+      <p>- Revealed by their choice of words, for a brief moment we can shed our Western reality tunnel and behold the 'steam boat' with new light</p>
+      <h3>[3] Consider Poetic Diction Example I </h3>
+      <ul><li>Would the South-Sea Islanders think of their speech as being 'poetic'</li></ul>	- It should be safe to say that it is the contrary, this would be every day business jargon
+      <p>- Thus a groups of words can be vehicles of poetry to some people and absolutely not for another</p>
+      <p>- It could be poetic to the consciousness that takes it in but unpoetic to the consciousness that sent it out</p>
+      <p>- This aspect of xxxxxpoetic diction discussed later</p>
+      <ul><li>From the examples the percentage of conscious effort to select and arrange the words with creative effort 'art'  from someone 'poet' varies</li><li>Assume the percent range from 0% in Poetic Diction Example I up to 80-90% in Poetic Diction Example VI</li></ul>		- None can be 100%, even the most OG poet must work with words, unlike stone, ink, or vibrating air, the substance of a word, its 'meaning' come from generations upon generations, therefore no poet can be the creator of all meaning in the poem
+      <ul><li>Intermediate Exploration Poetic Diction Example II</li></ul>	- You can waste you time with the 'communal origin' of ballads if you are so inclined
+      <p>- Even the best English ballads use common expressions, tricks of metre, repetition and narrative, and the genius poet imbues their shape of xxxxxpoetic diction into the ballad</p>
+      <p>- To be critical, experience it as a poem and then as a ballad.</p>
+      <p>- Take it further and read a continuous loop of ballads until you empty its meaning, until it loses its aesthetic imagination and then focus on the uniqueness of the example in that moment</p>
+      <ul><li>The lyric from Samuel Daniel  Poetic Diction Example III and a the genius poet Campion, share an essence known as it's Elizabethan-ness, that phenomenon is not exclusive to the Elizabethan lyric </li></ul>	- Found in Greek poetry, French Pleiade, English Metaphysic, Cavalier lyric, and named joint-stock poetry
+      <p>- Poets can have the same contemporary influence, pronounced when heard with music.</p>
+      <p>- If we saturate our imagination with one genre, it dissolves as being a genre and then we can experience the art of the individual poet</p>
+      <p>- Realization and contemplation are two separate poetic pleasures, this joint-stock poetry becomes a third pleasure itself</p>
+      <p>- "It might be compared with the delight which Geoffrey Chaucer took in contemplating 'the law of kind' from The Man of Law's Tale"</p>
+      <p>- Our enjoyment of the joint-stock poetry element is not shared with the actual poets, for them it is unconscious and lived experience</p>
+      <h3>[4] Introspective analysis</h3>
+      <ul><li>Appreciation of poetry involves a 'felt change of consciousness'</li></ul>	- Appreciation felt at the actual moment of change
+      <p>- Beyond the potential of seeing the world through the poet's eyes</p>
+      <p>- At the actual moment of pleasure is more transitory, depends on the change</p>
+      <ul><li>Imagine; </li></ul>	- Pass wire coil between magnet poles to generate current, only if moved positively across lines of force
+      <p>- Leave the coil at rest, completely permeated in the magnetic field and yet nothing happens</p>
+      <p>- Current only flows when the coil moves through</p>
+      <p>- Poetic mood is like this, formed with passage through different planes of consciousness</p>
+      <p>- It lives in that moment of transition and then dies</p>
+      <p>- Some means must be found to renew the transition itself</p>
+      <ul><li>Our souls are enriched after we possess Poetry, when it has entered deeply in our beings, we no longer care about the diction.</li></ul>	- The diction is spent and maybe disposed.
+      <p>- "OB; For, if ever we go back to linger lovingly over the exquisite phrasing of some fragment of poesy whose essence has long since been our own, and of which the spirit has become a part of our every waking moment, if we do this, is it not for the very reason that we want to renew the thrill which accompanied the first acquisition of the treasure?"!ElevenLabs_2025-06-13T01_34_39_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>- We mutter these words well known and forgotten, casting back into that frame from just before learning it</p>
+      <p>- WHY? Is it because we know instinctively that we need the change to feel the pleasure once more</p>
+      <p>-</p>
+      <p>- "OB; Everlasting day can no more freshen the earth with dew than everlasting night, but the change from night to day and from day back again to night"!ElevenLabs_2025-06-13T01_39_58_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>- George Santayana expresses this rare aesthetic experience</p>
+      <p>- "Paraphrase: We are habitually insensible to beauty. Criticism is a brief delight or intuition. Beauty rarely smiles on her adorers, who are reduced for habitual comfort to recall her past favors. Aesthetic glow may pervade, seldom mentioned, working beneath thoughts and judgements which take a cognitive or practical direction. Only with predominant aesthetic do we exclaim, How beautiful! Taste is formed by massive and distinct aesthetic emotion; preference grows conscious, judgements reverberate in late calm hours; they bread prejudices, habits, secret standard for all other beauties. These tastes and ideals stretch into the rest of our days. Once set we will seldom look afresh with new categories. Our standards come from our first masters and our first loves. No other can have that true sublimity. The volume and intensity can override previous judgements. These warm moments are veiled wit our cold systematic opinions, filing our days and shaping our careers, those moments are crucial and alive."</p>
+      <p>- This unique element can become clear with the elucidation of the cause.</p>
+      <p>- A poetic experience is a 'difference of potential', a kind of discrepancy between two moods/modes of consciousness.</p>
+      <p>- Note it to be useful to study the psychology of aesthetics</p>
+      <h3>[5] A Distinction was drawn</h3>
+      <ul><li>Between:</li></ul>	- Poetry as the cause of immediate pleasure (what we have been talking about in the last three sections)
+      <p>- and poetry as a possession which is expressed in some form across all examples.</p>
+      <p>- "OB; especially in Poetic Diction Example V(a), I am impressed not merely by the difference between my consciousness and the consciousness of which they are the expression, but by something more. I find that, in addition to the moment or moments of aesthetic pleasure in appreciation, I gain from them a more permanent boon. It is as though my own consciousness had actually been expanded."!ElevenLabs_2025-06-13T01_43_32_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>- The imagine contains an abundance of truth and beauty, to such a degree than now I see real boats, waves, and swans actually somewhat different now.</p>
+      <ul><li>"OB; Now my normal everyday experience, as human being, of the world around me depends entirely on what I bring to the sense-datum from within; and the absorption of this metaphor into my imagination has enabled me to bring more than I could before."!ElevenLabs_2025-06-13T01_41_23_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</li><li>*It created something in me</li><li>A faculty to recognize resemblance and analogies, in action, shall be called <em>knowledge</em>, considered as a <em>state</em>, separate from how it was acquired, shall be called <em>wisdom</em></li><li>Metaphor and simile are elements found in poetic diction that conduce <em>wisdom</em></li><li>A word like "significant" will be justified in due course</li></ul>	- "OB; A little reflection shows that all <em>meaning</em> -even of the most primitive kind-is dependent on the possession of some measure of this power. Where it was wholly absent, the entire phenomenal cosmos must be extinguished. All sounds would fuse into one meaningless roar, all sights into one chaotic panorama, amid which no individual objects-not even colour itself-would be distinguishable."!ElevenLabs_2025-06-13T01_45_15_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3
+      <ul><li>No dear reader, imagine for a moment of you standing in a normal and familiar space (your house, trees, grass, sky, etc..)</li></ul>	- Now rip away your memory, all of your assimilated, forgotten experiences, which powers your <em>recognition</em>
+      <p>- Now assume, in spite of this, you are still at your full cognitive ability as a adult</p>
+      <p>- "OB; It will appear, I think, that for the first few moments his consciousness-if it can bear that name-will be deprived not merely of all thought, but even of all perception, as we ordinarily understand the word poetic diction footnote 2 unless we choose to suppose a certain unimaginable minimum, a kind of panorama of various light, which he will confront with a vacant and uncomprehending stare."!ElevenLabs_2025-06-13T01_51_33_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <ul><li>No longer would square, red and white object be a house, that create concepts like inside, walls and ceilings, not even a square or color will remain.</li><li>Basic distinction in form and color, created by our concepts which unite with the pure-sense datums.</li><li>We acquire and stack concepts as we age, <em>with help from words</em>, square, red, etc.. </li><li>Using our past perceptions, using language as a storehouse poetic diction footnote 3, collecting ideas, (cf. II, 2) this allows us to be <em>conscious</em>, of the world around us</li><li>"OB; There is, therefore, nothing pretentious or dilettante in describing my experience as 'an expansion of consciousness'."!ElevenLabs_2025-06-13T01_55_48_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</li></ul><h3>[6] While this:</h3>
+      <ul><li>This expansion in knowledge may remain a permanent possession as wisdom</li></ul>	- The aesthetic <em>pleasure</em> will stay with that exact moment of expansion, which previously stemmed from the moment of change.
+      <p>- "OB; In fact, as far as the possibility of aesthetic pleasure is concerned, expansion is merely one particular form taken by the necessary change, or movement; and if I wish to repeat the pleasure, I am obliged, as was pointed out (S 4) to throw myself back into the imaginative content which was mine before I had made these metaphors a part of my meaning of life."!ElevenLabs_2025-06-13T01_58_32_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <ul><li>To trace this poetic mood, we look at the nature and history of language itself.</li></ul>	- We are quite in accord with the traditions
+      <p>- Dante Alighieri wrote about language, the Frenchman Joachim du Bellay with a national twist, William Wordsworth and Percy Bysshe Shelley, showed how poetic diction should be inseparable from the study of language</p>
+      <p>- From poetic diction footnote 4</p>
+      <p>- Per Percy Bysshe Shelley "In the infancy of society every author is necessarily a poet, because language itself is poetry....Every original language near to its source is itself the chaos of a cyclic poem"</p>
+      <p>- From poetic diction footnote 5</p>
+      <p>- Per William Wordsworth "subject could not be determined without pointing out in what manner language and the human mind act and react on each other, and without retracing the revolutions,  not of literature alone, but likewise of society itself"</p>
+      <p>- Per Samuel Taylor Coleridge, "Poetry is the best words in the best order" or the best language</p>
+      <p>- Can we plot out the "lesser vagaries of English versification"</p>
+      <p>- "OB; Without some such ground-plan all criticism, all theorizing on the problems of poetic diction, all speculation as to what was or was not beautiful or justifiable in the poetry of the past, and above all, all attempts to apply such theories to the poetry of the present, must peter out in expressions of personal taste. If my inclination is to skepticism and polite society, I shall exalt Pope and Racine at the the expense of Dante and Shelley; if to natural scenery and creative evolution, I shall praise Wordsworth and spit upon Waller. It does not seem unduly arrogant to suggest that criticism is tired of this cat and dog business and needs a little fresh air."!ElevenLabs_2025-06-13T02_00_48_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <div class="backlinks"><span class="backlinks-label">linked from</span><a href="#poetic-diction-a-study-in-meaning" class="wikilink">Poetic Diction A Study in Meaning →</a> <a href="#poetic-diction-chapter-i-definition-and-examples" class="wikilink">Poetic Diction Chapter I. Definition and Examples →</a> <a href="#poetic-diction-chapter-iii-metaphor" class="wikilink">Poetic Diction Chapter III. Metaphor →</a> <a href="#poetic-diction-chapter-iii-metaphor" class="wikilink">Poetic Diction Chapter III. Metaphor →</a></div>
+    `,
+  },
+  {
+    title: "Poetic Diction Chapter III. Metaphor",
+    slug:  "poetic-diction-chapter-iii-metaphor",
+    date:  "2026-02-28",
+    tags:  ["book"],
+    body: `
+      <p>Research</p>
+      <p>Owen Barfield</p>
+      <p><a href="#poetic-diction-a-study-in-meaning" class="wikilink">Poetic Diction A Study in Meaning →</a></p>
+      <p>Previous Chapter: <a href="#poetic-diction-chapter-ii-the-effects-of-poetry" class="wikilink">Poetic Diction Chapter II. The Effects of Poetry →</a></p>
+      <p>Next Chapter:</p>
+      <p>https://hiphilangsci.net/2016/09/28/ludwig-noire-and-the-debate-on-language-origins-in-the-19th-century/</p>
+      <p>METAPHOR</p>
+      <h1>[1] </h1>
+      <p>Since the time of Plato, primarily grammarians and logicians have studied language.</p>
+      <p>Then philology grows, focusing on the external forms of words. However they lacked a profound study of meaning, of individual words.</p>
+      <p>"OB; Semantics, as it is now commonly called-makes its first, embryonic appearance as a cautionary chapter following the chapter on Terms in a logical textbook, and it is not until long after that it acquires a separate existence, and even a hint of wings, in the work of writers like  Richard Chenevix Trench, Max Muller, and Logan Pearsall Smith"!ElevenLabs_2025-06-13T01_30_38_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>Philosophers have noticed the intimate connection between language and thought, beautifully described with the Greek word # λόγος or logos with a combined meaning of both words simultaneously.</p>
+      <p>After Aristotle, western philosophy became like a offspring of Logic, with the focus on language far and few between.</p>
+      <p>"OB; To anyone attempting to construct a metaphysic in strict accordance with the cannons and categories of formal logic, the fact that the meanings of words change, not only from age to age, but from context to context, is certainly interesting; but its is interesting solely because it is a nuisance."</p>
+      <p>!ElevenLabs_2025-06-13T01_27_37_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>A merchant may have "interest" in the financial mysteries of "inflation" and "deflation".</p>
+      <p>What kind of interest is this?</p>
+      <p>The very money this merchant uses for all his work could have a mere "subjective" value, a slice of a endless process, in time.</p>
+      <p>If true then all is lost, the flood gates open.</p>
+      <p>"OB: Like magic, he sees shrewd practical maxims turning into rarified academic theories, and a comparatively simple and intelligible system of acknowledged facts (the economic verities) having to be rigged with all sorts of super-subtle reservations and ceteris paribus, before it will bear the faintest relation to contemporary realities."</p>
+      <p>!ElevenLabs_2025-06-25T03_29_00_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>The conception of;</p>
+      <ul><li>money = "symbol of barter" and words = "name of things"</li></ul>	- both similar, not untrue, more "out of date"
+      <p>- Not due to science revealing ancient errors, rather that the facts have changed</p>
+      <ul><li>Money once did = "symbol of barter" and words once expressed the face of concrete reality </li></ul>Can we recognize this essential change?
+      <p>Like a stubborn economist, fixed on the past, rejects all the new and clings to stabilization</p>
+      <p>So too the philosopher rejects a study in meaning, while faithful to an ancient system of definitions</p>
+      <p>For both cases a deep unconscious voice cries "Lass mich schlafen!" or "Let me sleep!"</p>
+      <p>The popular point of view on semantics is excellent</p>
+      <p>"OB: The original twist was given by the Father of Logic himself, when he included in his Organon a brief treatise De Interpretatione, and since then the conception of language as the prime material of logical constructions has been developed many times with infinite delicacy. It is difficult, for example, to praise too highly the limpid clarity of the third book of Locke's Essay on the Human Understanding; and even as recently as the last century Mr. Bosanquet found memorable things to say in the opening chapters of his Logic."</p>
+      <p>!ElevenLabs_2025-07-02T04_05_18_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>Surely there are even other modern philosophers who have done as well, or better.</p>
+      <p>With this, we have had, and absolutely felt, language held by the logical mind.</p>
+      <p>What we are lacking, with only flickers and hints is language grasped by the poetic mind.</p>
+      <p>What is the fundamental difference between logical and poetic minds?</p>
+      <p>Far more than Poetry and Science, we will sketch the way using a poetic understanding</p>
+      <p>Alert! this is not a true, poetic history and philosophy of language.</p>
+      <p>In fact we will avoid the nature of language unless necessary, just to throw on "Poetry"</p>
+      <h1>[2]</h1>
+      <p>Metaphor connects between meaning and poetry in a visible way.</p>
+      <p>"OB: For one of the first things that a student of etymology-even quite an amateur student-discovers for himself is that every modern language, with its thousands of abstract terms and its nuances of meaning and association, is <em>apparently</em> nothing, from beginning to end, but an unconscionable tissue of dead, or petrified, metaphors."!ElevenLabs_2025-07-17T01_25_07_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>When tracing the meanings of many words or elements of words, as far back as possible we typically find they relate to either:</p>
+      <p>a solid or sensible object</p>
+      <p>a animal or human activity</p>
+      <p>We find many examples, consider the scientific objective term <em>elasticity</em> and the metaphysical term <em>abstract</em>, come from verbs meaning <em>draw or drag</em></p>
+      <p>While</p>
+      <p><em>centrifugal</em></p>
+      <p>center</p>
+      <p>centrum; fixed point of the two points of a drafting compass "center of a circle"</p>
+      <p>Greek <em>kentron</em>; sharp point, goad, sting of wasp</p>
+      <p><em>kentein</em>; stitch</p>
+      <p><em>kent-</em>; to prick</p>
+      <p>fugitive</p>
+      <p>Old French <em>fugitif</em>; absent, missing</p>
+      <p>Latin <em>fugitivus</em>; fleeing</p>
+      <p>PIE root <em>bheug-</em>; to flee</p>
+      <p>Greek <em>phyge</em>; flight, exile</p>
+      <p><em>centripetal</em></p>
+      <p>center</p>
+      <p>centrum; fixed point of the two points of a drafting compass "center of a circle"</p>
+      <p>Greek <em>kentron</em>; sharp point, goad, sting of wasp</p>
+      <p><em>kentein</em>; stitch</p>
+      <p><em>kent-</em>; to prick</p>
+      <p>pet-</p>
+      <p>Latin petere; to attack, assail, seek, strive after, ask for, beg</p>
+      <p>Greek <em>piptein</em>; to fall</p>
+      <p>Other words, epithet, theme, thesis, anathema, hypothesis</p>
+      <p>connect with <em>tithenai</em> and <em>dhe-</em> meaning; to put, to place</p>
+      <p>Even everyday things like RIGHT and WRONG, being STRAIGHT and CROOKED or SOUR</p>
+      <p>explore right further: https://www.etymonline.com/word/right</p>
+      <p>"OB: Some philologists, looking still further back into the past, have resolved these two classes into one, but this is immaterial to the point at issue. 'Nihil in intellectu quod non prius fuerit in sensu' or "Nothing is in the intellect that was not first in the senses" wrote Locke, and Anatole France, in his Jardin d'Epicure has adorned this theory of thought with a characteristically modern jumble of biological, anthropological and etymological ideas."!ElevenLabs_2025-07-17T03_11_51_Wyatt- Wise Rustic Cowboy_pvc_sp100_s84_sb100_v3.mp3</p>
+      <p>Note: excerpt from Anatole France book and sentence example....</p>
+      <h1>[3]</h1>
+      <p>Anatole France's etymologist then views,</p>
+      <p>language begins simple</p>
+      <p>perceptual meanings</p>
+      <p>building up by metaphor</p>
+      <p>a series of meanings pretend to be "abstract", while only being vague</p>
+      <p>So then the conception of the primitive mind, which this imagination is based, would map across the same state of consciousness used earlier in (<a href="#poetic-diction-chapter-ii-the-effects-of-poetry" class="wikilink">Poetic Diction Chapter II. The Effects of Poetry →</a> , 5) about boats, is but fictious. So that the this same process would apply to Shelley writing;</p>
+      <p>"My soul is an enchanted boat..."</p>
+      <div class="backlinks"><span class="backlinks-label">linked from</span><a href="#poetic-diction-a-study-in-meaning" class="wikilink">Poetic Diction A Study in Meaning →</a> <a href="#poetic-diction-chapter-ii-the-effects-of-poetry" class="wikilink">Poetic Diction Chapter II. The Effects of Poetry →</a> <a href="#poetic-diction-chapter-ii-the-effects-of-poetry" class="wikilink">Poetic Diction Chapter II. The Effects of Poetry →</a></div>
+    `,
+  },
+  {
+    title: "Cooking Recipes",
+    slug:  "cooking-recipes",
+    date:  "2026-02-27",
+    tags:  ["cooking"],
+    body: `
+      <h1>Published:</h1>
+      <p><a href="#my-family-sweet-tea" class="wikilink">My Family Sweet Tea →</a></p>
+      <p><a href="#indian-curry-base-gravy" class="wikilink">Indian Curry Base Gravy →</a></p>
+      <h1>Unpublished:</h1>
+      <p>Pakistani Daal Lentil</p>
+      <p>Punjabi Aloo Gobhi</p>
+      <p>Dhaba Matar Paneer</p>
+      <p>Grilled Lebanese Flatbread</p>
+      <p>Sweet Potato, Carrot, Bell Pepper with Basil Cream Sauce</p>
+      <p>Grilled Ribeye Steak</p>
+      <p>Dough Formula Table</p>
+      <p>Pizza Dough</p>
+      <p>Focaccia Dough</p>
+      <p>Soft Honey Square Rolls</p>
+      <p>Large Dinner Rolls</p>
+      <p>Good White Bread</p>
+      <p>Pie Crust</p>
+      <p>A recipe has a name</p>
+      <p>this recipe has many ingredients</p>
+      <p>each of these ingredients will have procedures</p>
+      <p>some of these procedures will create new ingredients</p>
+      <p>some procedures will not be connected with a ingredient</p>
+      <div class="backlinks"><span class="backlinks-label">linked from</span><a href="#indian-curry-base-gravy" class="wikilink">Indian Curry Base Gravy →</a> <a href="#my-family-sweet-tea" class="wikilink">My Family Sweet Tea →</a></div>
+    `,
+  },
+  {
+    title: "Indian Curry Base Gravy",
+    slug:  "indian-curry-base-gravy",
+    date:  "2026-02-27",
+    tags:  ["recipe", "cooking"],
+    body: `
+      <p><em>This will make your Indian dishes, rich with deep flavor</em></p>
+      <h1>Ingredients:</h1>
+      <h2>Vegetables: </h2>
+      <ul><li>Onion, Red: (1000) gram</li><li>Tomato: (750) gram</li><li>Garlic: (75) gram</li><li>Ginger: (75) gram</li><li>Chilies, Green: (2)</li></ul><h2>Whole Spice: </h2>
+      <ul><li>Bay Leaf: (2)</li><li>Cinnamon: (1)</li><li>Green Cardamon: (8)</li><li>Black Cardamon: (2)</li><li>Star Anise: (1)</li><li>Clove: (8)</li><li>Black Peppercorn: (12)</li></ul><h2>Powdered Spice: </h2>
+      <ul><li>Cumin: (1) teaspoon</li><li>Turmeric: (1) teaspoon</li><li>Coriander: (1) teaspoon</li><li>Red Chili: (1) teaspoon</li><li>Garam Marsala: (1) teaspoon</li><li>Salt: (1) teaspoon</li><li>Sugar, Brown: (1) teaspoon</li></ul>
+      <h2>Other: </h2>
+      <ul><li>Oil, Vegetable: (400) gram</li><li>Ghee: (2) tablespoon</li><li>Cashew, Soaked: (1) cup "turn into a paste"</li></ul>
+      <h1>Procedure:</h1>
+      <ol><li>Heat a large pot with medium flame</li><li>Add oil (200) gram, heat</li><li>Add whole spices, temper until it "smells good", oil will pick up a light hue change</li><li>Add garlic and ginger, cook</li><li>Add onions, salt, cook, low simmer</li><li>Add tomato, green chilies, cashew paste, low simmer, (25+) minutes, remove whole spices</li><li>Use stick blender, then set aside paste</li><li>Add ghee, oil (200) gram, powdered spices</li><li>Add paste blend, simmer (30+) minutes, oil should start to separate</li><li>Should be thick, and rich but not over powered</li></ol>
+      <p>This will get added into other Indian dishes like: Dhaba Matar Paneer</p>
+      <p><a href="#cooking-recipes" class="wikilink">Cooking Recipes →</a></p>
+      <div class="backlinks"><span class="backlinks-label">linked from</span><a href="#cooking-recipes" class="wikilink">Cooking Recipes →</a></div>
+    `,
+  },
+  {
+    title: "My Family Sweet Tea",
+    slug:  "my-family-sweet-tea",
+    date:  "2026-02-27",
+    tags:  ["recipe", "cooking"],
+    body: `
+      <p><em>My family takes sweet tea very seriously (or at least I do)</em></p>
+      <h1>Ingredients:</h1>
+      <ul><li>Water: One Gallon Jug</li><li>Baking Powder: (1/8) teaspoon</li><li>White Sugar, Granulated: (340) gram, (use a digital scale)</li><li>Tea, Lipton: (2) Gallon Size Bags, (60) gram of lesser tea, or (8) small tea bags</li></ul><h1>Procedure:</h1>
+      <ol><li>Fill empty gallon jug with coldest water possible.</li><li>Pour a small amount into sauce pot, (mine has a pour spout), Put jug in freezer</li><li>Heat water, almost to a boil, off at exactly 205F, (yes, I use a digital thermometer)</li><li>Add the baking powder, whisk</li><li>Add tea bags, set 15 minute timer</li><li>Remove bags, press out</li><li>Add sugar, whisk completely</li><li>Grab jug from freezer, pour in tea, ready to serve, right now</li><li>You will drink it faster than it could go bad, otherwise you have no business making sweet tea.</li></ol>
+      <p><a href="#cooking-recipes" class="wikilink">Cooking Recipes →</a></p>
+      <div class="backlinks"><span class="backlinks-label">linked from</span><a href="#cooking-recipes" class="wikilink">Cooking Recipes →</a></div>
+    `,
+  },
+  {
+    title: "The Christian Church",
+    slug:  "the-christian-church",
+    date:  "2026-02-27",
+    tags:  ["christianity"],
+    body: `
+      <p>Some Selective Church History:</p>
+      <h3>The Age of Jesus and the Apostles</h3>
+      <p>30: Crucifixion of Jesus; Pentecost</p>
+      <p>35: Stephen martyred; Paul converted</p>
+      <p>46: Paul begins missionary journeys</p>
+      <p>48: Council of Jerusalem this is from The Book of Acts Acts: 15</p>
+      <p>57: Paul’s Letter to the Romans</p>
+      <p>64: Fire of Rome; Nero launches persecutions</p>
+      <p>65: Peter and Paul executed</p>
+      <p>Not sure about the times but we have Docetism which deals with treating Jesus to be more than human, they could not have or imagine Jesus poop or have real human emotions and struggle.</p>
+      <p>Then we have Gnosticism</p>
+      <h3>The Age of Early Christianity</h3>
+      <p>70: Destruction of Jerusalem by Titus</p>
+      <p>110: Ignatius of Antioch martyred</p>
+      <p>150: Justin Martyr dedicates his _First Apology_</p>
+      <p>155: Polycarp martyred</p>
+      <p>172: Montanism movement begins</p>
+      <p>First recorded council is held to deal with this issue</p>
+      <p>180: Irenaeus writes Against the heresies</p>
+      <p>Bishop Maricon rejected all Gospels except Luke; the Marcionite Canon</p>
+      <p>193: Quartrodecimanism</p>
+      <p>196: Tertullian begins writing</p>
+      <p>200,s: Sabellius lives in Rome, not sure about where he is from. he is excommunicated by Pope Callixtus I for his teachings. What did he teach? Logic and the Trinity</p>
+      <p>If we look at what is taught in systematic theology around the Trinity. They provide</p>
+      <p>Economic Trinity = defined by roles in salvation</p>
+      <p>Ontological Trinity = defined by God's own being</p>
+      <p>What he ultimately teaches is this: Modalism</p>
+      <p>This is when we have One God who wears three masks, and comes in forms as Father, Son, Holy Spirit</p>
+      <p>A modern example is with water, one element with three forms</p>
+      <p>This is an issue because then when Jesus prays in the garden at Gethsemane to the father, then he is merely praying to himself, rendering the pray a farse. This causes major issues throughout scripture where God the Father is the exact same as the Son and this it is the Father on the cross.</p>
+      <p>After these teachings we will find two moves:</p>
+      <p>West: a focus on oneness: substantia, essentia, nature and threeness: persona,  via Tertullian</p>
+      <p>East: subordination in Trinity via Origen</p>
+      <p>So what is the Shepherd of Hermas an early text circulated as being possible of a Pauline connection?</p>
+      <p>What is the story behind The Gospel of Thomas, why was it heretical?</p>
+      <p>215: Origen begins writing</p>
+      <p>Father is Unbegotton</p>
+      <p>Son begotten eternally</p>
+      <p>Spirit flows from Father</p>
+      <p>While Origen teaching to combat that of Modalism, some of his followers took the "threeness" using the concept of subordination where the Father is supreme</p>
+      <p>This the leads to Lucian of Antioch who then teaches his extreme view of Origen to his student Arius who creates Arianism</p>
+      <p>Arius in Alexandria as a presbyter writes a letter to Alexander of Alexandria the bishop.</p>
+      <p>"We know one God, alone Unbegotten, the Son begotten by the father, is created, and was not before he was begotten..."</p>
+      <p>Lucien and Arius In graph forms:</p>
+      <p>God->Father (Unbegotten)->Creation->Son a creature->everything else</p>
+      <p>Compared with:</p>
+      <p>God->Father>Son>Spirit->Creation->everything else</p>
+      <p>230: Earliest known public churches built</p>
+      <p>248: Cyprian elected bishop of Carthage</p>
+      <p>250: Decius orders empire-wide persecution</p>
+      <p>270: Anthony takes up life of solitude</p>
+      <p>303: “Great Persecution” begins under Diocletian</p>
+      <h3>The Age of the Christian Empire</h3>
+      <p>312: Conversion of Constantine</p>
+      <p>312: Donatist Schism begins</p>
+      <p>313: “Edict of Milan”</p>
+      <p>323: Eusebius completes _Ecclesiastical History_</p>
+      <p>He disputed these books as potentially not being inspired:</p>
+      <p>Epistle of James, 2nd Peter, 2nd and 3rd John, Jude, Revelation</p>
+      <p>From _Ecclesiastical History_ 3.25.1-7</p>
+      <p>325: First Council of Nicea</p>
+      <p>Councils had been meetings for centuries</p>
+      <p>This was a Ecumenical = entire church meeting</p>
+      <p>Constantine pushed to get all of the bishop to participate</p>
+      <p>Marks a rise of influx of politics into church</p>
+      <p>Brings in a Constantinianization of the church</p>
+      <p>"synods" vs "councils", is regional vs whole</p>
+      <p>To elevate to a council happens when:</p>
+      <p>a crisis must be solved</p>
+      <p>something is strange</p>
+      <p>focus on biblical consensus</p>
+      <p>doctrine or Christian practices</p>
+      <p>Creeds are used to clarify or limit our language</p>
+      <p>Key, we do not condemn that man but the language used or the actual content of the teachings</p>
+      <p>Important to remember, these councils were messy and some people are being more sinful than normal to prove their points</p>
+      <p>They invite nearly 1800 bishops and around 300 attend, they do not need a majority vote, merely if you attend then your vote is counted, period.</p>
+      <p>Debates concerns with Arianism with Jesus being a creature, this is a major issue. So much so that Saint Nicholas aka Santa Clause slaps one of the Arians after being told what they believe of Jesus the Son.</p>
+      <p>The council rejects Arianism and produces the Nicene Creed this is only parts from the after meeting notes, the final version is produced later.</p>
+      <p>The Father: "We believe in one god, the Father the All-Mighty (All-Sovereign), maker of all, seen and unseen"</p>
+      <p>The Son: "And in one Lord, Jesus Christ, the Son of God, begotten from the Father as the Only-Begotten, that is from the father's substance, God from God, Light from Light, True God from True God, begotten, not made homousias with the father"</p>
+      <p>Holy Spirit: And we believe in the Holy Spirit</p>
+      <p>Then it will include these Anathemas: "But those who say: "There was a time when he was not" and "he was not before he was made" and "He was made out of nothing" or "He is of another substance" or "essence" or "The Son of God is created" or "changeable", of "alterable", they are condemned by the holy catholic and apostolic Church.</p>
+      <blockquote>	"Jesus loves us, and he has redeemed us, and he is sanctifying us, but we're still jerks and sinners." Dr. Ryan M Reeves</blockquote>
+      <p>After the council:</p>
+      <p>Eusebius of Caesarea signs the creed, however is uncomfortable as he wants to find the middle way, found issue with homoousias in that it could be considered as Modalism, to the degree that he questions the Athanasius writings</p>
+      <p>Historians find four categories after Nicea</p>
+      <p>Old Niceans or homo-ousias = Nicean creed, backed by Constantine he enforces it</p>
+      <p>Athanasius  bishop in Alexandria, defender of the Nicean creed, against Arianism</p>
+      <p>Eustathius  bishop in Antioch</p>
+      <p>New Niceans or homo kat' ousias or exactly similar</p>
+      <p>Semi-Arians or homoios kat' energeian or merely similar</p>
+      <p>Radical Arians or anomoios</p>
+      <p>Eusebius of Nicomedia and Theodoret, now Eusebius of Nicomedia was caught up in some political slandering for position and get charged with Modalism, he counters but is banished in 330</p>
+      <p>It is Eusebius of Nicomedia that gets Constantine to hear Arius once more and he thus provide a confession of belief which is supposed to be for the Nicean creed however it is not all the way, since it was Eusebius of Nicomedia who feels like they treated Arius harshly, and now it is Athanasius who is digging with homo-ousias and is devise, aggravating Constantine</p>
+      <p>Then in 335 at the Synod of Jerusalem the Meletian's come back and charge Athanasius for forcing his persists to wear linen robes! now he is making up rules, and they get Constantine involved and gets him in trouble, house arrest...however later he is made clean and the Meletians are in trouble..</p>
+      <p>341: Ulphilas, translator of Gothic Bible, becomes bishop</p>
+      <p>358: Basil the Great founds monastic community</p>
+      <p>The Cappadocian Church Fathers</p>
+      <p>Basil the Great</p>
+      <p>Saint Gregory of Nazianzus</p>
+      <p>Gregory of Nyssa</p>
+      <p>They will push for " one ousis in three hypostasis"</p>
+      <p>362: Council of Jerusalem</p>
+      <p>Athanasius is able to bridge the gap and get the Old/New Nicean teams to realize that they do agree, a consensus</p>
+      <p>Now they move on to challenge the Holy Spirit, since they have made Father = Son and not greater than or less than, now does the Holy Spirit have this same essence? Here we find the Pneumatomchian or Macedonians, Macedonius of Constantinople</p>
+      <p>Basil the Great writes a book to defend the Holy Spirit.</p>
+      <p>The Holy Spirit is more difficult to identify because He does not speak, He speaks through the profits and plays a different role in salvation. The Holy Spirit is the 'shy sovereign'</p>
+      <blockquote>"So the Spirit is the floodlight, illuminating the Lord Jesus; he is the contact lens that enables us to see him clearly...When the Spirit works in us, Christ himself, and not the Spirit, is the focus of our <em>attention</em>." J.I. Packer</blockquote>
+      <p>363; Council of Laodicea</p>
+      <p>Met in Asia Minor "Turkey"</p>
+      <p>Affirmed 26 books for the New Testament list, rejecting Revelations as a fake</p>
+      <p>367: Athanasius’s letter defines New Testament canon</p>
+      <blockquote>	"If the world goes against truth, then I go against the world." Athanasius</blockquote>
+      <p>374: Damascus I bishop of Rome condemns Macedonians</p>
+      <p>Apollinarius he supports Athanasius, homo-ousia, and that the Logos becomes flesh but lacks the proper language to describe the incarnation.</p>
+      <p>he teaches that</p>
+      <p>Christ had a human body</p>
+      <p>Logo's 'clothed' in flesh</p>
+      <p>Logos takes over human mind</p>
+      <p>The "Being John Malkovich problem"</p>
+      <p>"..that which He has not assumed He has not healed; but that which is united to God is also saved." Saint Gregory of Nazianzus, this is in connection with Romans 5</p>
+      <p>"Romans 5:16 For if the many died by the trespass of the one man, how much more did God's grace and gift that came by the grace of the one man, Jesus Christ, overflow to the many!"</p>
+      <p>He must be fully man, but sinless to be the one and only sacrifice to end all sacrifice. God must die on our behalf as one of us, the second Adam.</p>
+      <p>The fights are over Creeds and Salvation, we must be clear.</p>
+      <p>Doctrines web together, they always influence each other.</p>
+      <p>Order of Discussion</p>
+      <p>1. What is the relationship between the father and Son?</p>
+      <p>2. How can God become incarnate?</p>
+      <p>381: Christianity made state religion of Roman Empire</p>
+      <p>381: First Council of Constantinople</p>
+      <p>Known as the 2nd Ecumenical Council</p>
+      <p>Major canons of note:</p>
+      <p>condemns numerous heresies</p>
+      <p>Modalism, Arianism, Apollinarius teachings</p>
+      <p>affirms the Nicean creed and works to expand and clarify the language of the creed into what it is known today</p>
+      <p>Bishop of Constantinople = Bishop of Rome, West/East</p>
+      <p>some of the first seeds to the 1054 Catholic/Orthodox schism</p>
+      <p>This mostly eliminates Arianism from the East, however it is not gone in the West.</p>
+      <p>386: Augustine converts to Christianity</p>
+      <p>390: Ambrose defies emperor</p>
+      <p>398: Chrysostom consecrated bishop of Constantinople</p>
+      <p>405: Saint Jerome completes the _Vulgate_</p>
+      <p>410: Rome sacked by Visigoths</p>
+      <p>431: Council of Ephesus</p>
+      <p>432: Patrick begins mission to Ireland</p>
+      <p>440: Leo the Great consecrated bishop of Rome</p>
+      <p>445: Valentinian’s Edict strengthens primacy of Rome</p>
+      <p>451: Council of Chalcedon</p>
+      <p>500: Dionysius the Pseudo-Areopagite writes</p>
+      <p>524: Boethius completes _Consolation of Philosophy_</p>
+      <p>529: Justin publishes his legal Code</p>
+      <p>540: Benedict writes his monastic Rule</p>
+      <p>563: Columba establishes mission community on Iona</p>
+      <h3>The Christian Middle Ages</h3>
+      <p>590: Gregory the Great elected Pope</p>
+      <p>597: Ethelbert of Kent converted</p>
+      <p>622: Muhammad’s hegira: birth of Islam</p>
+      <p>663: Synod of Whitby</p>
+      <p>698: _Lindisfarne Gospels_</p>
+      <p>716: Boniface begins mission to the Germans</p>
+      <p>726: Controversy over icons begins in Eastern church</p>
+      <p>731: Bede’s _Ecclesiastical History_ published</p>
+      <p>732: Battle of Tours</p>
+      <p>750: Donation of Constantine written about this time</p>
+      <p>754: Pepin III’s donation helps found papal states</p>
+      <p>781: Alcuin becomes royal adviser to Charles</p>
+      <p>787: 2nd Council of Nicea settles icon controversy</p>
+      <p>800: Charlemagne crowned Holy Roman Emperor</p>
+      <p>843: Treaty of Verdun divides Carolingian Empire</p>
+      <p>861: East-West conflict over Photius begins</p>
+      <p>862: Cyril and Methodius begin mission to Slavs</p>
+      <p>909: Monastery at Cluny founded</p>
+      <p>988: Christianization of “Russia”</p>
+      <p>1054: East-West Split</p>
+      <p>1077: Emperor submits to Pope over investiture</p>
+      <p>1093: Anselm becomes archbishop of Canterbury</p>
+      <p>1095: First Crusade launched by Council of Clermont</p>
+      <p>1115: Bernard founds monastery at Clairvaux</p>
+      <p>1122: Concordat of Worms ends investiture controversy</p>
+      <p>1141: Hildegard of Bingen begins writing</p>
+      <p>1150: Universities of Paris and Oxford founded</p>
+      <p>1173: Waldensian movement begins</p>
+      <p>1208: Francis of Assisi renounces wealth</p>
+      <p>1215: _Magna Carta_</p>
+      <p>1215: Innocent III assembles Fourth Lateran Council</p>
+      <p>1220: Dominican Order established</p>
+      <p>1232: Gregory IX appoints first “inquisitors”</p>
+      <p>1272: Thomas Aquinas’s _Summa Theologiae_</p>
+      <p>1302: _Unam Sanctam_ proclaims papal supremacy</p>
+      <p>1309: Papacy begins “Babylonian” exile in Avignon</p>
+      <p>1321: Dante completes _Divine Comedy_</p>
+      <p>1370: Catherine of Siena begins her Letters</p>
+      <p>1373: Julian of Norwich receives her revelations</p>
+      <p>1378: Great Papal Schism begins</p>
+      <p>1380: Wyclif supervises English Bible translation</p>
+      <p>1414: Council of Constance begins</p>
+      <p>1413: Hus burned at stake</p>
+      <p>1418: Thomas á Kempis writes _The Imitation of Christ_</p>
+      <p>1431: Joan of Arc burned at stake</p>
+      <p>1453: Constantinople falls; end of Eastern Roman Empire</p>
+      <p>1456: Gutenberg produces first printed Bible</p>
+      <p>1479: Establishment of Spanish Inquisition</p>
+      <p>1488: First complete Hebrew Old Testament</p>
+      <p>1497: Savonarola excommunicated</p>
+      <p>1506: Work begins on new St. Peter’s in Rome</p>
+      <p>1512: Michelangelo completes Sistine Chapel frescoes</p>
+      <p>1516: Erasmus publishes _Greek New Testament_</p>
+      <h3>The Age of the Reformation</h3>
+      <p>1517: Luther posts his _Ninety-Five Theses_</p>
+      <p>1518: Ulrich Zwingli comes to Zurich</p>
+      <p>1521: Diet of Worms</p>
+      <p>1524: The Peasants’ Revolt erupts</p>
+      <p>1525: Tyndale’s New Testament published</p>
+      <p>1525: Anabaptist movement begins</p>
+      <p>1527: _Schleitheim Confession of Faith_</p>
+      <p>1529: Colloquy of Marburg</p>
+      <p>1530: Augsburg _Confession_</p>
+      <p>1534: Act of Supremacy; Henry VIII heads Eng. church</p>
+      <p>1536: Calvin publishes first edition of _Institutes_</p>
+      <p>1536: Menno Simons baptized as Anabaptist</p>
+      <p>1540: Loyola gains approval for Society of Jesus</p>
+      <p>1545: Council of Trent begins</p>
+      <p>1549: _Book of Common Prayer_ released</p>
+      <p>1549: Xavier begins mission to Japan</p>
+      <p>1555: Peace of Augsburg</p>
+      <p>1555: Latimer and Ridley burned at stake</p>
+      <p>1559: John Knox makes final return to Scotland</p>
+      <p>1563: First text of _Thirty-Nine Articles_ issued</p>
+      <p>1563: _Foxe’s Book of Martyrs_ published</p>
+      <p>1565: Teresa of Avila writes _The Way of Perfection_</p>
+      <p>1572: St. Bartholomew’s Day Massacre</p>
+      <p>1577: _Formula of Concord_</p>
+      <p>1582: Ricci and Ruggieri begin mission in China</p>
+      <p>1589: Moscow becomes independent patriarchate</p>
+      <p>1598: Edict of Nantes (revoked 1685)</p>
+      <p>1609: Smyth baptizes self and first Baptists</p>
+      <p>1611: King James Version of Bible published</p>
+      <p>1618: Synod of Dort begins</p>
+      <p>1618: Thirty Years’ War begins</p>
+      <p>1620: _Mayflower Compact_ drafted</p>
+      <p>1633: Galileo forced to recant his theories</p>
+      <p>1636: Harvard College founded</p>
+      <p>1636: Roger Williams founds Providence, R.I.</p>
+      <p>1647: George Fox begins to preach</p>
+      <p>1646: _Westminster Confession_ drafted</p>
+      <p>1648: Peace of Westphalia ends Thirty Years’ War</p>
+      <h3>The Age of Reason and Revival</h3>
+      <p>1649: _Cambridge Platform_</p>
+      <p>1653: Cromwell named Lord Protector</p>
+      <p>1654: Pascal has definitive conversion experience</p>
+      <p>1667: Milton’s _Paradise Lost_</p>
+      <p>1668: Rembrandt paints _Return of the Prodigal Son_</p>
+      <p>1675: Spencer’s _Pia Desideria_ advances Pietism</p>
+      <p>1678: Bunyan writes the _Pilgrim’s Progress_</p>
+      <p>1682: Penn founds Pennsylvania</p>
+      <p>1687: Newton publishes _Principia Mathematica_</p>
+      <p>1689: Toleration Act in England</p>
+      <p>1707: Bach publishes first work</p>
+      <p>1707: Watts publishes _Hymns and Spiritual Songs_</p>
+      <p>1729: Jonathan Edwards becomes pastor at Northampton</p>
+      <p>1732: First Moravian missionaries</p>
+      <p>1735: George Whitefield converted</p>
+      <p>1738: John and Charles Wesley’s evangelical conversions</p>
+      <p>1740: Great Awakening peaks</p>
+      <p>1742: First production of Handel’s _Messiah_</p>
+      <p>1759: Voltaire’s _Candide_</p>
+      <p>1771: Francis Asbury sent to America</p>
+      <p>1773: Jesuits suppressed (until 1814)</p>
+      <p>1779: Newton and Cowper publish _Olney Hymns_</p>
+      <p>1780: Robert Raikes begins his Sunday school</p>
+      <p>1781: Kant publishes _Critique of Pure Reason_</p>
+      <h3>The Age of Progress</h3>
+      <p>1789: French Revolution begins</p>
+      <p>1789: Bill of Rights</p>
+      <p>1793: William Carey sails for India</p>
+      <p>1793: Festival of Reason (de-Christianization of France)</p>
+      <p>1799: Schleiermacher publishes _Lectures on Religion_</p>
+      <p>1801: Concordat between Napoleon and Pius VII</p>
+      <p>1804: British and Foreign Bible Society formed</p>
+      <p>1806: Samuel Mills leads Haystack Prayer Meeting</p>
+      <p>1807: Wilberforce leads abolition of slave trade</p>
+      <p>1810: American Board of Commissioners for Foreign Missions</p>
+      <p>1811: Campbells begin Restoration Movement</p>
+      <p>1812: Adoniram Judson begins mission trip</p>
+      <p>1816: Richard Allen elected bishop of new AME church</p>
+      <p>1817: Elizabeth Fry organizes relief in Newgate Prison</p>
+      <p>1819: Channing issues Unitarian Christianity</p>
+      <p>1827: J. N. Darby founds the Plymouth Brethren</p>
+      <p>1833: John Keble’s sermon launches Oxford Movement</p>
+      <p>1834: Mueller opens Scriptural Knowledge Institute</p>
+      <p>1835: Finney’s _Lectures on Revivals_</p>
+      <p>1840: Livingstone sails for Africa</p>
+      <p>1844: First Adventist churches formed</p>
+      <p>1844: Kierkegaard writes _Philosophical Fragments_</p>
+      <p>1845: John Henry Newman becomes Roman Catholic</p>
+      <p>1845: Phoebe Palmer writes _The Way of Holiness_</p>
+      <p>1848: Marx publishes _Communist Manifesto_</p>
+      <p>1851: Harriet Beecher Stowe releases _Uncle Tom’s Cabin_</p>
+      <p>1854: Immaculate Conception made dogma</p>
+      <p>1854: Spurgeon becomes pastor of New Park St. Church</p>
+      <p>1855: D. L. Moody converted</p>
+      <p>1857: Prayer Meeting Revival begins in New York</p>
+      <p>1859: Darwin publishes _On the Origin of Species_</p>
+      <p>1859: Japan reopens to foreign missionaries</p>
+      <p>1860: U.S. Civil War begins</p>
+      <p>1864: _Syllabus of Errors_ issued by Pope Pius IX</p>
+      <p>1865: J. Hudson Taylor founds China Inland Mission</p>
+      <p>1870: First Vatican Council declares papal infallibility</p>
+      <p>1878: William and Catherine Booth found Salvation Army</p>
+      <p>1879: Frances Willard becomes president of WCTU</p>
+      <p>1880: Abraham Kuyper starts Free University</p>
+      <p>1885: Berlin Congress spurs African independent churches</p>
+      <p>1885: Wellhausen’s documentary hypothesis</p>
+      <p>1886: Student Volunteer Movement begins</p>
+      <p>1895: Freud publishes first work on psychoanalysis</p>
+      <p>1896: Billy Sunday begins leading revivals</p>
+      <p>1901: Speaking in tongues at Parham’s Bible School</p>
+      <p>1906: Azusa Street revival</p>
+      <p>1906: Schweitzer’s _Quest of the Historical Jesus_</p>
+      <p>1908: Federal Council of Churches forms</p>
+      <p>1910: International Missionary Conference begins</p>
+      <p>1910: The _Fundamentals_ begin to be published</p>
+      <p>1912: Social Creed of the Churches adopted</p>
+      <h3>The Age of Ideologies</h3>
+      <p>1914: World War I begins</p>
+      <p>1919: Karl Barth writes _Commentary on Romans_</p>
+      <p>1924: First Christian radio broadcasts</p>
+      <p>1931: C. S. Lewis comes to faith in Christ</p>
+      <p>1934: Barmen Declaration</p>
+      <p>1934: Wycliffe Bible Translators founded</p>
+      <p>1938: Kristallnacht accelerates Holocaust</p>
+      <p>1939: World War II begins</p>
+      <p>1940: First Christian TV broadcasts</p>
+      <p>1941: Bultmann calls for demythologization</p>
+      <p>1941: Niebuhr’s _Nature and Destiny of Man_</p>
+      <p>1942: National Association of Evangelicals forms</p>
+      <p>1945: Atomic bomb dropped on Hiroshima</p>
+      <p>1947: Dead Sea Scrolls discovered</p>
+      <p>1948: World Council of Churches organized</p>
+      <p>1949: Los Angeles Crusade catapults Billy Graham</p>
+      <p>1950: Missionaries forced to leave China</p>
+      <p>1950: Assumption of Mary made dogma</p>
+      <p>1950: Mother Teresa founds Missionaries of Charity</p>
+      <p>1951: Bonhoeffer’s _Letters and Papers from Prison_</p>
+      <p>1960: Bennett resigns; charismatic renewal advances</p>
+      <p>1962: Vatican II opens</p>
+      <p>1963: King leads March on Washington</p>
+      <p>1966: Chinese Cultural Revolution</p>
+      <p>1968: Medellin Conference advances liberation theology</p>
+      <p>1974: Lausanne Congress on World Evangelization</p>
+      <p>1979: John Paul II’s first visit to Poland</p>
+      <p>1985: Gorbachev General Secretary of Soviet Communist Party</p>
+      
+    `,
+  },
+];
+/* @@END_BLOCKS@@ */
+
 
 // ════════════════════════════════════════════════════════════
-// ENGINE — do not edit below this line
+// ENGINE
 // ════════════════════════════════════════════════════════════
 
 let activeTag = null;
@@ -682,7 +1284,7 @@ function tagCount(key) {
   return blocks.filter(b => (b.tags || []).includes(key)).length;
 }
 
-// Build sidebar
+// ── Build sidebar ────────────────────────────────────────────
 const groupContainer = document.getElementById('tag-groups');
 
 TAG_GROUPS.forEach(group => {
@@ -716,7 +1318,7 @@ TAG_GROUPS.forEach(group => {
   groupContainer.appendChild(div);
 });
 
-// Render blocks
+// ── Render blocks ────────────────────────────────────────────
 const list = document.getElementById('block-list');
 
 blocks.forEach((block, i) => {
@@ -748,7 +1350,6 @@ blocks.forEach((block, i) => {
   `;
 
   el.querySelector('.block-header').addEventListener('click', () => toggleBlock(el));
-
   el.querySelectorAll('.block-tag').forEach(tag => {
     tag.addEventListener('click', e => { e.stopPropagation(); setTag(tag.dataset.tag); });
   });
@@ -756,7 +1357,7 @@ blocks.forEach((block, i) => {
   list.appendChild(el);
 });
 
-// Search
+// ── Filtering ────────────────────────────────────────────────
 document.getElementById('search').addEventListener('input', e => {
   queryStr = e.target.value.toLowerCase().trim();
   applyFilters();
@@ -806,20 +1407,18 @@ function applyFilters() {
 
   const total = blocks.length;
   document.getElementById('result-count').textContent =
-    visible === total ? `${total} blocks` : `${visible} of ${total}`;
+    visible === total ? `${total} notes` : `${visible} of ${total}`;
   document.getElementById('empty').classList.toggle('visible', visible === 0);
 }
 
-// ── Accordion toggle ────────────────────────────────────────
+// ── Accordion ────────────────────────────────────────────────
 function toggleBlock(el) {
   const isOpen = el.classList.contains('open');
-  // Close all open blocks
   document.querySelectorAll('.block.open').forEach(b => b.classList.remove('open'));
-  // If it wasn't open, open it
   if (!isOpen) el.classList.add('open');
 }
 
-// ── Wikilinks — scroll to & open target block ────────────────
+// ── Wikilinks — click to open target block ───────────────────
 document.getElementById('block-list').addEventListener('click', e => {
   const link = e.target.closest('a.wikilink');
   if (!link) return;
@@ -828,7 +1427,6 @@ document.getElementById('block-list').addEventListener('click', e => {
   const target = document.querySelector(href);
   if (!target) return;
   e.preventDefault();
-  // Close others, open target
   document.querySelectorAll('.block.open').forEach(b => b.classList.remove('open'));
   target.classList.add('open');
   setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
@@ -836,13 +1434,12 @@ document.getElementById('block-list').addEventListener('click', e => {
 
 // ── Keyboard navigation ──────────────────────────────────────
 document.addEventListener('keydown', e => {
-  // Don't fire when typing in the search box
   if (document.activeElement === document.getElementById('search')) return;
 
   const visible = [...document.querySelectorAll('.block:not(.hidden)')];
   if (visible.length === 0) return;
 
-  const openBlock = document.querySelector('.block.open');
+  const openBlock    = document.querySelector('.block.open');
   const currentIndex = openBlock ? visible.indexOf(openBlock) : -1;
 
   if (e.key === 'ArrowDown' || e.key === 'j') {
@@ -858,26 +1455,25 @@ document.addEventListener('keydown', e => {
     prev.classList.add('open');
     prev.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } else if (e.key === 'Enter' || e.key === ' ') {
-    if (openBlock) {
-      e.preventDefault();
-      openBlock.classList.toggle('open');
-    }
+    if (openBlock) { e.preventDefault(); openBlock.classList.toggle('open'); }
   } else if (e.key === 'Escape') {
     if (openBlock) openBlock.classList.remove('open');
   }
 });
 
-// Mobile
+// ── Mobile sidebar ───────────────────────────────────────────
 const hamburger = document.getElementById('hamburger');
 const sidebar   = document.getElementById('sidebar');
 const overlay   = document.getElementById('overlay');
 
 hamburger.addEventListener('click', () => { sidebar.classList.add('open'); overlay.classList.add('open'); });
 overlay.addEventListener('click',   () => { sidebar.classList.remove('open'); overlay.classList.remove('open'); });
-document.getElementById('sidebar-close').addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('open'); });
+document.getElementById('sidebar-close').addEventListener('click', () => {
+  sidebar.classList.remove('open');
+  overlay.classList.remove('open');
+});
 
 applyFilters();
-
 </script>
 </body>
 </html>
